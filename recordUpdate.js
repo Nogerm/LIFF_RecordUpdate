@@ -18,7 +18,7 @@ window.onload = function (e) {
 
 function initializeApp(data) {
   //check user permission
-  const query_url = host + "?type=user_info&lineId=" + data.context.userId;
+  const query_url = hostURL + "?type=user_info&lineId=" + data.context.userId;
   alert("query_url: " + query_url);
   axios.get(query_url)
   .then(function (response) {
