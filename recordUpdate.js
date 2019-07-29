@@ -5,8 +5,6 @@ window.onload = function (e) {
   liff.init(
     data => {
       // Now you can call LIFF API
-      const userId = data.context.userId;
-      //alert("data: " + JSON.stringify(data));
       initializeApp(data);
     },
     err => {
@@ -23,7 +21,7 @@ function initializeApp(data) {
   axios.get(query_url)
   .then(function (response) {
     // Success
-    alert("response:" + JSON.stringify(response));
+    alert("response:" + JSON.stringify(response.data));
     if(response.data.status === 200) {
       alert(response.data);
     } else {
