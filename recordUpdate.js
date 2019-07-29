@@ -33,8 +33,12 @@ function initializeApp(data) {
     if(response.data.status === 200) {
       alert(JSON.stringify(response.data));
 
-      let div_name  = document.getElementById("name");
-      div_name.textContent = "哈囉! " + response.data.userName;
+      //update value
+      let div_user_name  = document.getElementById("name");
+      div_user_name.textContent = "哈囉! " + response.data.userName;
+
+      let div_group_name  = document.getElementById("name");
+      div_group_name.textContent = response.data.groupName;
     } else {
       alert(response.data.message);
     }
