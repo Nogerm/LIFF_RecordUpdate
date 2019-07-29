@@ -4,6 +4,7 @@ const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw
 window.onload = function (e) {
   liff.init(function (data) {
     initializeApp(data);
+    alert("init");
   });
 };
 
@@ -22,5 +23,6 @@ function initializeApp(data) {
   .catch(function (error) {
     // Error
     console.log(error);
+    alert(error);
   })
 }
