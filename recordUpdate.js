@@ -6,7 +6,7 @@ window.onload = function (e) {
     data => {
       // Now you can call LIFF API
       const userId = data.context.userId;
-      alert("userId: " + userId);
+      alert("data: " + JSON.stringify(data));
       initializeApp(data);
     },
     err => {
