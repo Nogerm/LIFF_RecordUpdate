@@ -3,12 +3,6 @@ const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw
 //init
 window.onload = function (e) {
 
-  let div_loading = document.getElementById("loading");
-  div_loading.style.display = "contents";
-
-  let div_content = document.getElementById("content");
-  div_content.style.display = "none";
-
   liff.init(
     data => {
       // Now you can call LIFF API
@@ -17,8 +11,10 @@ window.onload = function (e) {
     err => {
       // LIFF initialization failed
       alert("init fail");
-      div_loading.style.display = "none";
-      div_content.style.display = "contents";
+
+      //show/hide element
+      let div_loading = document.getElementById("loading");
+      div_loading.className = "ui inverted dimmer";
     }
   );
 };
@@ -29,17 +25,16 @@ function initializeApp(data) {
   axios.get(query_url)
   .then(function (response) {
     // Success
-    let div_loading = document.getElementById("loading");
-    div_loading.style.display = "none";
 
-    let div_content = document.getElementById("content");
-    div_content.style.display = "contents";
+    //show/hide element
+    let div_loading = document.getElementById("loading");
+    div_loading.className = "ui inverted dimmer";
 
     if(response.data.status === 200) {
       alert(JSON.stringify(response.data));
 
-      var div_name  = document.getElementById("name");
-      div_name.text = response.data.userName;
+      let div_name  = document.getElementById("name");
+      div_name.textContent = "哈囉! " + response.data.userName;
     } else {
       alert(response.data.message);
     }
