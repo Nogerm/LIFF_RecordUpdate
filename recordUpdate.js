@@ -14,7 +14,7 @@ function initializeApp(data) {
   .then(function (response) {
     // Success
     if(response.data.status === 200) {
-
+      alert(response.data);
     } else {
       alert(response.data.message);
     }
