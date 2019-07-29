@@ -6,7 +6,7 @@ window.onload = function (e) {
     data => {
       // Now you can call LIFF API
       const userId = data.context.userId;
-      alert("data: " + JSON.stringify(data));
+      //alert("data: " + JSON.stringify(data));
       initializeApp(data);
     },
     err => {
@@ -18,7 +18,7 @@ window.onload = function (e) {
 
 function initializeApp(data) {
   //check user permission
-  const query_url = host + "?type=user_info&lineId=" + data.userId;
+  const query_url = host + "?type=user_info&lineId=" + data.context.userId;
   axios.get(query_url)
   .then(function (response) {
     // Success
