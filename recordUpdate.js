@@ -30,7 +30,7 @@ function initializeApp(data) {
   .then(function (response) {
     // Success
     div_loading.style.display = "none";
-    div_content.style.display = "block";
+    div_content.style.display = "contents";
 
     if(response.data.status === 200) {
       alert(JSON.stringify(response.data));
