@@ -1,13 +1,12 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
 
-var div_loading = document.getElementById("loading");
-var div_content = document.getElementById("content");
-var div_name    = document.getElementById("name");
-
 //init
 window.onload = function (e) {
 
-  div_loading.style.display = "block";
+  var div_loading = document.getElementById("loading");
+  var div_content = document.getElementById("content");
+
+  div_loading.style.display = "contents";
   div_content.style.display = "none";
 
   liff.init(
@@ -18,6 +17,8 @@ window.onload = function (e) {
     err => {
       // LIFF initialization failed
       alert("init fail");
+      div_loading.style.display = "none";
+      div_content.style.display = "none";
     }
   );
 };
@@ -34,6 +35,7 @@ function initializeApp(data) {
     if(response.data.status === 200) {
       alert(JSON.stringify(response.data));
 
+      var div_name    = document.getElementById("name");
       div_name.text = response.data.userName;
     } else {
       alert(response.data.message);
