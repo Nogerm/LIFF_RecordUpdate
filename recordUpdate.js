@@ -58,3 +58,7 @@ function initializeApp(data) {
     alert(error);
   });
 }
+
+function send() {
+  alert("Send button");
+}
