@@ -21,7 +21,7 @@ window.onload = function (e) {
 
 function initializeApp(data) {
   //check user permission
-  const query_url = hostURL + "?type=user_info&lineId=" + data.context.userId;
+  const query_url = hostURL + "?type=init_pack&lineId=" + data.context.userId;
   axios.get(query_url)
   .then(response => {
     // Success
@@ -47,8 +47,5 @@ function initializeApp(data) {
     // Error
     console.log(error);
     alert(error);
-  })
-  .then(() => {
-    alert("2nd then");
-  }
+  });
 }
