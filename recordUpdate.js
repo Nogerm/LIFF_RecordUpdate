@@ -42,7 +42,7 @@ function initializeApp(data) {
 
       let table = document.getElementById("userTable");
       response.data.groupMembers.forEach((element, index) => {
-        let row = table.insertRow(3);
+        let row = table.insertRow(index + 2);
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
         cell_name.innerHTML = "<td>" + element[index][0] + "</td>";
