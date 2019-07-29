@@ -3,8 +3,8 @@ const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw
 //init
 window.onload = function (e) {
   liff.init(function (data) {
-    initializeApp(data);
     alert("init");
+    initializeApp(data);
   });
 };
 
