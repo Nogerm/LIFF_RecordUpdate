@@ -39,6 +39,15 @@ function initializeApp(data) {
 
       let div_group_name  = document.getElementById("groupName");
       div_group_name.textContent = response.data.groupName;
+
+      let table = document.getElementById("userTable");
+      response.data.groupMembers.forEach((element, index) => {
+        let row = table.insertRow(3);
+        let cell_name  = row.insertCell(0);
+        let cell_check = row.insertCell(1);
+        cell_name.innerHTML = "<td>" + element[index][0] + "</td>";
+        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\" name=\"ex\">\n <label>出席狀況</label>\n </div>\n </td>"; 
+      });
     } else {
       alert(response.data.message);
     }
