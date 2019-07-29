@@ -23,7 +23,7 @@ function initializeApp(data) {
   //check user permission
   const query_url = hostURL + "?type=user_info&lineId=" + data.context.userId;
   axios.get(query_url)
-  .then(function (response) {
+  .then(response => {
     // Success
 
     //show/hide element
@@ -43,9 +43,12 @@ function initializeApp(data) {
       alert(response.data.message);
     }
   })
-  .catch(function (error) {
+  .catch(error => {
     // Error
     console.log(error);
     alert(error);
   })
+  .then(() => {
+    alert("2nd then");
+  }
 }
