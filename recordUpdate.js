@@ -17,13 +17,11 @@ window.onload = function (e) {
 function initializeApp(data) {
   //check user permission
   const query_url = hostURL + "?type=user_info&lineId=" + data.context.userId;
-  alert("query_url: " + query_url);
   axios.get(query_url)
   .then(function (response) {
     // Success
-    alert("response:" + JSON.stringify(response.data));
     if(response.data.status === 200) {
-      alert(response.data);
+      alert(JSON.stringify(response.data));
     } else {
       alert(response.data.message);
     }
