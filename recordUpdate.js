@@ -37,7 +37,7 @@ function initializeApp(data) {
       let div_user_name  = document.getElementById("name");
       div_user_name.textContent = "哈囉! " + response.data.userName;
 
-      let div_group_name  = document.getElementById("name");
+      let div_group_name  = document.getElementById("groupName");
       div_group_name.textContent = response.data.groupName;
     } else {
       alert(response.data.message);
