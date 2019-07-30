@@ -46,8 +46,6 @@ function initializeApp(data) {
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
         cell_name.innerHTML = "<td>" + element[0] + "</td>";
-        let cell_name  = row.insertCell(0);
-        let cell_name  = row.insertCell(0);
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input id=\"checkbox" + index + "\" type=\"checkbox\" οnchange=\"checkboxChange(this)\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
