@@ -16,17 +16,6 @@ window.onload = function (e) {
       //show/hide element
       let div_loading = document.getElementById("loading");
       div_loading.className = "ui inverted dimmer";
-
-      //test
-      var data = [["1","2","3"]];
-      let table = document.getElementById("userTable");
-      data[0].forEach((name, index) => {
-        let row = table.insertRow(index + HeaderRowNum);
-        let cell_name  = row.insertCell(0);
-        let cell_check = row.insertCell(1);
-        cell_name.innerHTML = "<td>" + name + "</td>";
-        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
-      });
     }
   );
 };
@@ -50,10 +39,10 @@ function initializeApp(data) {
       div_user_name.textContent = "哈囉! " + response.data.userName;
 
       let div_time  = document.getElementById("time");
-      div_time.textContent = response.data.userName;
+      div_time.textContent = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
 
       let div_group_name  = document.getElementById("groupName");
-      div_group_name.textContent = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
+      div_group_name.textContent = response.data.groupName;
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
@@ -76,7 +65,7 @@ function initializeApp(data) {
 
 function timeStampToString (time){
   const datetime = new Date();
-  datetime.setTime(time);
+  datetime.setTime(time * 1000);
   const year = datetime.getFullYear();
   const month = datetime.getMonth() + 1;
   const date = datetime.getDate();
