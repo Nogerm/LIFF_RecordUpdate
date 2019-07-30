@@ -1,7 +1,7 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
 const HeaderRowNum = 2;
 
-var reportTime = "";
+var reportTimeStr = "";
 var reportGroup = "";
 
 //init
@@ -43,8 +43,8 @@ function initializeApp(data) {
 
       let div_group_name  = document.getElementById("groupName");
       reportGroup = response.data.groupName;
-      reportTime = response.data.eventTime[response.data.eventTime.length - 1];
-      div_group_name.textContent = reportGroup + ' - ' + timeStampToString(reportTime);
+      reportTimeStr = response.data.eventTime[response.data.eventTime.length - 1];
+      div_group_name.textContent = reportGroup + ' - ' + timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
@@ -88,7 +88,7 @@ function send() {
   //alert("check result: " + JSON.stringify(checkResult));
 
   axios.post(hostURL, {
-    time: reportTime,
+    time: reportTimeStr,
     groupName: reportGroup,
     reportData: checkResult
   })
