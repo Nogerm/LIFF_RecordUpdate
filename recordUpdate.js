@@ -41,13 +41,10 @@ function initializeApp(data) {
       let div_user_name  = document.getElementById("userName");
       div_user_name.textContent = "哈囉! " + response.data.userName;
 
-      let div_time  = document.getElementById("time");
-      reportTime = response.data.eventTime[response.data.eventTime.length - 1];
-      div_time.textContent = timeStampToString(reportTime);
-
       let div_group_name  = document.getElementById("groupName");
-      reportGroup = response.data.groupName
-      div_group_name.textContent = reportGroup;
+      reportGroup = response.data.groupName;
+      reportTime = response.data.eventTime[response.data.eventTime.length - 1];
+      div_group_name.textContent = reportGroup + ' - ' + timeStampToString(reportTime);
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
