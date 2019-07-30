@@ -93,7 +93,11 @@ function send() {
     reportData: checkResult
   };
   alert("post data: " + JSON.stringify(postData));
-  axios.post(hostURL, postData)
+  axios.post(hostURL, postData, {
+    headers: {
+        'Content-Type': undefined,
+    }
+  })
   .then(function (response) {
     alert("server result: " + JSON.stringify(response.data));
   })
