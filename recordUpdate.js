@@ -43,8 +43,8 @@ function initializeApp(data) {
 
       let div_group_name  = document.getElementById("groupName");
       reportGroup = response.data.groupName;
-      reportTimeStr = response.data.eventTime[response.data.eventTime.length - 1];
-      div_group_name.textContent = reportGroup + ' - ' + timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
+      reportTimeStr = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
+      div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
