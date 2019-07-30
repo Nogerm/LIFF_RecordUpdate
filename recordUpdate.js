@@ -1,6 +1,9 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
 const HeaderRowNum = 2;
 
+var reportTime = "";
+var reportGroup = "";
+
 //init
 window.onload = function (e) {
 
@@ -39,10 +42,12 @@ function initializeApp(data) {
       div_user_name.textContent = "哈囉! " + response.data.userName;
 
       let div_time  = document.getElementById("time");
-      div_time.textContent = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
+      reportTime = response.data.eventTime[response.data.eventTime.length - 1];
+      div_time.textContent = timeStampToString(reportTime);
 
       let div_group_name  = document.getElementById("groupName");
-      div_group_name.textContent = response.data.groupName;
+      reportGroup = response.data.groupName
+      div_group_name.textContent = reportGroup;
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
@@ -83,5 +88,17 @@ function send() {
   var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
-  alert("check result: " + JSON.stringify(checkResult));
+  //alert("check result: " + JSON.stringify(checkResult));
+
+  axios.post(hostURL, {
+    time: reportTime,
+    groupName: reportGroup,
+    reportData: checkResult
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
