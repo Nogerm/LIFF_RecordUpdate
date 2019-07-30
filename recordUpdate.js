@@ -41,11 +41,11 @@ function initializeApp(data) {
       div_group_name.textContent = response.data.groupName;
 
       let table = document.getElementById("userTable");
-      response.data.groupMembers.forEach((element, index) => {
+      response.data.groupMembers[0].forEach((name, index) => {
         let row = table.insertRow(index + 2);
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
-        cell_name.innerHTML = "<td>" + element[0] + "</td>";
+        cell_name.innerHTML = "<td>" + name + "</td>";
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
