@@ -31,7 +31,7 @@ function initializeApp(data) {
     div_loading.className = "ui inverted dimmer";
 
     if(response.data.status === 200) {
-      alert(JSON.stringify(response.data));
+      //alert(JSON.stringify(response.data));
 
       //update value
       let div_user_name  = document.getElementById("userName");
@@ -46,7 +46,9 @@ function initializeApp(data) {
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
         cell_name.innerHTML = "<td>" + element[0] + "</td>";
-        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\" name=\"ex\">\n <label>出席狀況</label>\n </div>\n </td>"; 
+        let cell_name  = row.insertCell(0);
+        let cell_name  = row.insertCell(0);
+        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input id=\"checkbox" + index + "\" type=\"checkbox\" οnchange=\"checkboxChange(this)\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
       alert(response.data.message);
@@ -57,6 +59,10 @@ function initializeApp(data) {
     console.log(error);
     alert(error);
   });
+}
+
+function checkboxChange(item) {
+  alert("event: " + JSON.stringify(item));
 }
 
 function send() {
