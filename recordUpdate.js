@@ -77,7 +77,8 @@ function arrayify(collection) {
 
 function send() {
   const table = document.getElementById("userTable");
-  const tableBodyArray = arrayify(table.rows).splice(0, 2);
+  const tableBodyArray = arrayify(table.rows);
+  tableBodyArray.splice(0, 2);
   var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
