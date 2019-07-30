@@ -1,4 +1,5 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
+const HeaderRowNum = 2;
 
 //init
 window.onload = function (e) {
@@ -15,6 +16,17 @@ window.onload = function (e) {
       //show/hide element
       let div_loading = document.getElementById("loading");
       div_loading.className = "ui inverted dimmer";
+
+      //test
+      var data = [["1","2","3"]];
+      let table = document.getElementById("userTable");
+      data[0].forEach((name, index) => {
+        let row = table.insertRow(index + HeaderRowNum);
+        let cell_name  = row.insertCell(0);
+        let cell_check = row.insertCell(1);
+        cell_name.innerHTML = "<td>" + name + "</td>";
+        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
+      });
     }
   );
 };
@@ -42,7 +54,7 @@ function initializeApp(data) {
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
-        let row = table.insertRow(index + 2);
+        let row = table.insertRow(index + HeaderRowNum);
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
         cell_name.innerHTML = "<td>" + name + "</td>";
@@ -64,8 +76,9 @@ function arrayify(collection) {
 }
 
 function send() {
-  let tableBody = document.getElementById("tableBody");
-  var checkResult = arrayify(tableBody.rows).map(function(row) {
+  const table = document.getElementById("userTable");
+  const tableBodyArray = arrayify(table.rows).splice(0, 2);
+  var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
   alert("check result: " + JSON.stringify(checkResult));
