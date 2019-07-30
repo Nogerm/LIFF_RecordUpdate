@@ -46,7 +46,7 @@ function initializeApp(data) {
         let cell_name  = row.insertCell(0);
         let cell_check = row.insertCell(1);
         cell_name.innerHTML = "<td>" + element[0] + "</td>";
-        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input id=\"checkbox" + index + "\" type=\"checkbox\" οnchange=\"checkboxChange(this)\">\n <label>出席狀況</label>\n </div>\n </td>"; 
+        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
       alert(response.data.message);
@@ -59,10 +59,14 @@ function initializeApp(data) {
   });
 }
 
-function checkboxChange(item) {
-  alert("event: " + JSON.stringify(item));
+function arrayify(collection) {
+  return Array.prototype.slice.call(collection);
 }
 
 function send() {
-  alert("Send button");
+  let tableBody = document.getElementById("tableBody");
+  var checkResult = arrayify(tableBody.rows).map(function(row) {
+    return row.cells[1].children[0].children[0].checked;
+  });
+  alert("check result: " + JSON.stringify(checkResult));
 }
