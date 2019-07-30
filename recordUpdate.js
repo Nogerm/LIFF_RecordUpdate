@@ -87,16 +87,16 @@ function send() {
   });
   //alert("check result: " + JSON.stringify(checkResult));
 
-  axios.post(hostURL, {
+  const postData = {
     time: reportTimeStr,
     groupName: reportGroup,
     reportData: checkResult
-  })
+  };
+  axios.post(hostURL, postData)
   .then(function (response) {
-    console.log(response);
     alert("server result: " + JSON.stringify(response.data));
   })
   .catch(function (error) {
-    console.log(error);
+    alert("post error: " + error);
   });
 }
