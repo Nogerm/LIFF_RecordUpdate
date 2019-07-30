@@ -97,6 +97,7 @@ function send() {
   })
   .then(function (response) {
     console.log(response);
+    alert("server result: " + JSON.stringify(response.data));
   })
   .catch(function (error) {
     console.log(error);
