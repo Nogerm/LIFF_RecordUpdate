@@ -49,8 +49,11 @@ function initializeApp(data) {
       let div_user_name  = document.getElementById("userName");
       div_user_name.textContent = "哈囉! " + response.data.userName;
 
+      let div_time  = document.getElementById("time");
+      div_time.textContent = response.data.userName;
+
       let div_group_name  = document.getElementById("groupName");
-      div_group_name.textContent = response.data.groupName;
+      div_group_name.textContent = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
 
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
@@ -69,6 +72,15 @@ function initializeApp(data) {
     console.log(error);
     alert(error);
   });
+}
+
+function timeStampToString (time){
+  const datetime = new Date();
+  datetime.setTime(time);
+  const year = datetime.getFullYear();
+  const month = datetime.getMonth() + 1;
+  const date = datetime.getDate();
+  return year + "/" + month + "/" + date;
 }
 
 function arrayify(collection) {
