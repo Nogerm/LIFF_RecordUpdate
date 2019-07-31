@@ -92,7 +92,8 @@ function send() {
     groupName: reportGroup,
     reportData: checkResult
   };
-  alert("post data 1: " + JSON.stringify(postData));
+  alert("post data 2: " + JSON.stringify(postData));
+  axios.defaults.withCredentials = true;
   axios.post(hostURL, JSON.stringify(postData))
   .then(function (response) {
     alert("server result: " + JSON.stringify(response.data));
