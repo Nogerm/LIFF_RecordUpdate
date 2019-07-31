@@ -71,7 +71,9 @@ function timeStampToString (time){
   const year = datetime.getFullYear();
   const month = datetime.getMonth() + 1;
   const date = datetime.getDate();
-  return year + "/" + month + "/" + date;
+
+  if(month < 10) return year + "/0" + month + "/" + date;
+  else return year + "/" + month + "/" + date;
 }
 
 function arrayify(collection) {
@@ -92,20 +94,7 @@ function send() {
     groupName: reportGroup,
     reportData: JSON.stringify(checkResult)
   };
-  alert("post data 9: " + postData);
-  /*
-  axios.defaults.withCredentials = true;
-  axios.post(hostURL, Qs.stringify(postData), {
-    headers: {
-      'Content-Type': 'text/plain; charset=UTF-8',
-    }
-  })
-  .then(function (response) {
-    alert("server result: " + JSON.stringify(response.data));
-  })
-  .catch(function (error) {
-    alert("post error: " + JSON.stringify(error));
-  });*/
+  alert("post data 10: " + postData);
 
   $.ajax({
     url: hostURL,
