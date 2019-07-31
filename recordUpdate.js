@@ -102,6 +102,6 @@ function send() {
     alert("server result: " + JSON.stringify(response.data));
   })
   .catch(function (error) {
-    alert("post error: " + error);
+    alert("post error: " + error.response);
   });
 }
