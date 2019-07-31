@@ -93,15 +93,11 @@ function send() {
     reportData: checkResult
   };
   alert("post data: " + JSON.stringify(postData));
-  axios.post(hostURL, postData, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
+  axios.post(hostURL, JSON.stringify(postData))
   .then(function (response) {
     alert("server result: " + JSON.stringify(response.data));
   })
   .catch(function (error) {
-    alert("post error: " + error.response);
+    alert("post error: " + JSON.stringify(error));
   });
 }
