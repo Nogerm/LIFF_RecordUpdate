@@ -90,9 +90,9 @@ function send() {
   const postData = {
     time: reportTimeStr,
     groupName: reportGroup,
-    reportData: checkResult
+    reportData: JSON.stringify(checkResult)
   };
-  alert("post data 8: " + Qs.stringify(postData));
+  alert("post data 9: " + postData);
   /*
   axios.defaults.withCredentials = true;
   axios.post(hostURL, Qs.stringify(postData), {
@@ -111,12 +111,8 @@ function send() {
     url: hostURL,
     type: "POST",
     datatype: "json",
-    data: {    
-      time: reportTimeStr,
-      groupName: reportGroup,
-      reportData: checkResult
-    },
-    success: function (res, status) {    //成功時回傳
+    data: postData,
+    success: function (res, status) {
       alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
     },
     error: function(xhr, ajaxOptions, thrownError) {
