@@ -92,7 +92,8 @@ function send() {
     groupName: reportGroup,
     reportData: checkResult
   };
-  alert("post data 7: " + Qs.stringify(postData));
+  alert("post data 8: " + Qs.stringify(postData));
+  /*
   axios.defaults.withCredentials = true;
   axios.post(hostURL, Qs.stringify(postData), {
     headers: {
@@ -104,5 +105,22 @@ function send() {
   })
   .catch(function (error) {
     alert("post error: " + JSON.stringify(error));
-  });
+  });*/
+
+  $.ajax({
+    url: hostURL,
+    type: "POST",
+    datatype: "json",
+    data: {    
+      time: reportTimeStr,
+      groupName: reportGroup,
+      reportData: checkResult
+    },
+    success: function (res, status) {    //成功時回傳
+      alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert("post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError);
+    }
+});
 }
