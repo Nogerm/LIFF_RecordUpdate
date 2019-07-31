@@ -94,7 +94,7 @@ function send() {
     groupName: reportGroup,
     reportData: JSON.stringify(checkResult)
   };
-  alert("post data 10: " + postData);
+  //alert("post data: " + postData);
 
   $.ajax({
     url: hostURL,
