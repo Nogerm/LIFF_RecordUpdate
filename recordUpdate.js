@@ -14,7 +14,9 @@ window.onload = function (e) {
     },
     err => {
       // LIFF initialization failed
-      alert("init fail");
+      alert("錯誤","LIFF視窗初始化失敗",function(){
+        liff.closeWindow();
+      });
 
       //show/hide element
       let div_loading = document.getElementById("loading");
@@ -55,13 +57,13 @@ function initializeApp(data) {
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
-      alert(response.data.message);
+      alert("錯誤", response.data.message);
     }
   })
   .catch(error => {
     // Error
     console.log(error);
-    alert(error);
+    alert("錯誤", error);
   });
 }
 
@@ -102,10 +104,13 @@ function send() {
     datatype: "json",
     data: postData,
     success: function (res, status) {
-      alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
+      //alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
+      alert("回報成功", "點擊確定關閉視窗", function(){
+        liff.closeWindow();
+      });
     },
     error: function(xhr, ajaxOptions, thrownError) {
-      alert("post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError);
+      alert("錯誤", "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError);
     }
 });
 }
