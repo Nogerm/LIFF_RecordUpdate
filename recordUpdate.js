@@ -14,8 +14,13 @@ window.onload = function (e) {
     },
     err => {
       // LIFF initialization failed
-      alert("錯誤","LIFF視窗初始化失敗",function(){
-        liff.closeWindow();
+      swal.fire({
+        title: '錯誤',
+        text: 'LIFF視窗初始化失敗',
+        type: 'error',
+        onClose: () => {
+          liff.closeWindow();
+        }
       });
 
       //show/hide element
