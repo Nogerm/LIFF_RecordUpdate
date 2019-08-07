@@ -62,13 +62,21 @@ function initializeApp(data) {
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else {
-      alert("錯誤", response.data.message);
+      swal.fire({
+        title: '錯誤',
+        text: response.data.message,
+        type: 'error'
+      });
     }
   })
   .catch(error => {
     // Error
     console.log(error);
-    alert("錯誤", error);
+    swal.fire({
+      title: '錯誤',
+      text: error,
+      type: 'error'
+    });
   });
 }
 
@@ -110,12 +118,21 @@ function send() {
     data: postData,
     success: function (res, status) {
       //alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
-      alert("回報成功", "點擊確定關閉視窗", function(){
-        liff.closeWindow();
+      swal.fire({
+        title: '回報成功',
+        text: '點擊確定關閉視窗',
+        type: 'success',
+        onClose: () => {
+          liff.closeWindow();
+        }
       });
     },
     error: function(xhr, ajaxOptions, thrownError) {
-      alert("錯誤", "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError);
+      swal.fire({
+        title: '錯誤',
+        text: "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError,
+        type: 'error'
+      });
     }
 });
 }
