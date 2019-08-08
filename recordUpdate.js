@@ -57,6 +57,7 @@ function initializeApp(data) {
       //update event date
       let dateDropdownMenu = document.getElementById('dateDropdownMenu');
       response.data.eventTime.forEach((event) => {
+        alert("event" + JSON.stringify(event));
         let optionDiv = document.createElement('div');
         optionDiv.className = "item";
 
