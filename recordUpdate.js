@@ -58,7 +58,7 @@ function initializeApp(data) {
       var selector = document.getElementById('selectDate');
       response.data.eventTime.forEach((event) => {
         var option = document.createElement('option');
-        option.innerText = event[1].split('T')[0] + " (" + event[2] + ") ";
+        option.innerText = event[1].split('T')[0].replace(/-/g, "/") + " (" + event[2] + ") ";
         selector.appendChild(option);
       });
 
