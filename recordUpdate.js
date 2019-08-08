@@ -70,8 +70,9 @@ function initializeApp(data) {
         var option = document.createElement('option');
         option.value = event[1].split('T')[0];
         option.innerText = event[1].split('T')[0];
+        selector.appendChild(option);
       });
-      alert("selector" + JSON.stringify(selector));
+      alert("selector append" + JSON.stringify(selector));
 
       //update table
       let table = document.getElementById("userTable");
