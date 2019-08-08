@@ -57,22 +57,21 @@ function initializeApp(data) {
       //update event date
       let dateDropdownMenu = document.getElementById('dateDropdownMenu');
       response.data.eventTime.forEach((event) => {
-        alert("event" + JSON.stringify(event));
         let optionDiv = document.createElement('div');
         optionDiv.className = "item";
-
-        let spanDesc = document.createElement('span');
-        spanDesc.className = "description";
-        spanDesc.innerHTML = event[2];
-
-        let spanText = document.createElement('span');
-        spanText.className = "text";
-        spanText.innerHTML = event[1].split('T')[0];
-
-        optionDiv.appendChild(spanDesc);
-        optionDiv.appendChild(spanText);
+        optionDiv.innerHTML = "<span class=\"description\">" + event[2] + "</span><span class=\"text\">" + event[1].split('T')[0] + "</span>";
         dateDropdownMenu.appendChild(optionDiv);
       });
+      alert("dateDropdownMenu" + JSON.stringify(dateDropdownMenu));
+
+      //update select
+      let selector = document.getElementById('selectDate');
+      response.data.eventTime.forEach((event) => {
+        let option = document.createElement('option');
+        option.value = event[1].split('T')[0];
+        option.innerText = event[1].split('T')[0];
+      });
+      alert("selector" + JSON.stringify(selector));
 
       //update table
       let table = document.getElementById("userTable");
