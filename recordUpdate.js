@@ -42,7 +42,7 @@ function initializeApp(data) {
     div_loading.className = "ui inverted dimmer";
 
     if(response.data.status === 200) {
-      //alert(JSON.stringify(response.data));
+      alert(JSON.stringify(response.data));
 
       //update value
       let div_user_name  = document.getElementById("userName");
@@ -61,6 +61,7 @@ function initializeApp(data) {
         options += "<option label=\"" + event[2] + "\">" + event[1] + "</option>";
       });
       pickerOptions.innerHTML = options;
+      alert(options);
 
       //update table
       let table = document.getElementById("userTable");
