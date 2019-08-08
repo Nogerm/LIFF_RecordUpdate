@@ -54,25 +54,14 @@ function initializeApp(data) {
       reportTimeStr = timeStampToString(response.data.eventTime[eventsNum][0]);
       div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
 
-      //update event date
-      var dateDropdownMenu = document.getElementById('dateDropdownMenu');
-      response.data.eventTime.forEach((event) => {
-        var optionDiv = document.createElement('div');
-        optionDiv.className = "item";
-        optionDiv.innerHTML = "<span class=\"description\">" + event[2] + "</span><span class=\"text\">" + event[1].split('T')[0] + "</span>";
-        dateDropdownMenu.appendChild(optionDiv);
-      });
-      alert("dateDropdownMenu" + JSON.stringify(dateDropdownMenu));
-
       //update select
       var selector = document.getElementById('selectDate');
       response.data.eventTime.forEach((event) => {
         var option = document.createElement('option');
         option.value = event[1].split('T')[0];
-        option.innerText = event[1].split('T')[0];
+        //option.innerText = event[1].split('T')[0];
         selector.appendChild(option);
       });
-      alert("selector append" + JSON.stringify(selector));
 
       //update table
       let table = document.getElementById("userTable");
