@@ -55,13 +55,23 @@ function initializeApp(data) {
       div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
 
       //update event date
-      let pickerOptions = document.getElementById('pickerOptions');
-      let options = '';
+      let dateDropdownMenu = document.getElementById('dateDropdownMenu');
       response.data.eventTime.forEach((event) => {
-        options += "<option label=\"" + event[2] + "\">" + event[1] + "</option>";
+        let optionDiv = document.createElement('div');
+        optionDiv.className = "item";
+
+        let spanDesc = document.createElement('span');
+        spanDesc.className = "description";
+        spanDesc.innerHTML = event[2];
+
+        let spanText = document.createElement('span');
+        spanText.className = "text";
+        spanText.innerHTML = event[1].split('T')[0];
+
+        optionDiv.appendChild(spanDesc);
+        optionDiv.appendChild(spanText);
+        dateDropdownMenu.appendChild(optionDiv);
       });
-      pickerOptions.innerHTML = options;
-      alert(options);
 
       //update table
       let table = document.getElementById("userTable");
