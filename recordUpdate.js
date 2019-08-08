@@ -55,9 +55,9 @@ function initializeApp(data) {
       div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
 
       //update event date
-      let dateDropdownMenu = document.getElementById('dateDropdownMenu');
+      var dateDropdownMenu = document.getElementById('dateDropdownMenu');
       response.data.eventTime.forEach((event) => {
-        let optionDiv = document.createElement('div');
+        var optionDiv = document.createElement('div');
         optionDiv.className = "item";
         optionDiv.innerHTML = "<span class=\"description\">" + event[2] + "</span><span class=\"text\">" + event[1].split('T')[0] + "</span>";
         dateDropdownMenu.appendChild(optionDiv);
@@ -65,9 +65,9 @@ function initializeApp(data) {
       alert("dateDropdownMenu" + JSON.stringify(dateDropdownMenu));
 
       //update select
-      let selector = document.getElementById('selectDate');
+      var selector = document.getElementById('selectDate');
       response.data.eventTime.forEach((event) => {
-        let option = document.createElement('option');
+        var option = document.createElement('option');
         option.value = event[1].split('T')[0];
         option.innerText = event[1].split('T')[0];
       });
