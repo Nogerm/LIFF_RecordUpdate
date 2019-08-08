@@ -58,6 +58,7 @@ function initializeApp(data) {
       var selector = document.getElementById('selectDate');
       response.data.eventTime.forEach((event) => {
         var option = document.createElement('option');
+        option.value = event[1].split('T')[0].replace(/-/g, "/");
         option.innerText = event[1].split('T')[0].replace(/-/g, "/") + " (" + event[2] + ") ";
         selector.appendChild(option);
       });
@@ -97,12 +98,19 @@ function timeStampToString (time){
   const month = datetime.getMonth() + 1;
   const date = datetime.getDate();
 
-  if(month < 10) return year + "/0" + month + "/" + date;
+  if(month < 10 && date < 10) return year + "/0" + month + "/0" + date;
+  else if(month < 10 && date >= 10) return year + "/0" + month + "/" + date;
+  else if(month >= 10 && date < 10) return year + "/" + month + "/0" + date;
   else return year + "/" + month + "/" + date;
 }
 
 function arrayify(collection) {
   return Array.prototype.slice.call(collection);
+}
+
+function setSelectTime(selectedObj) {
+  reportTimeStr = selectedObj.value;
+  alert("selected date: " + reportTimeStr);
 }
 
 function send() {
