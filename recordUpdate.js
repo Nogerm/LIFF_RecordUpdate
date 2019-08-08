@@ -19,7 +19,7 @@ window.onload = function (e) {
         text: 'LIFF視窗初始化失敗',
         type: 'error',
         onClose: () => {
-          liff.closeWindow();
+          //liff.closeWindow();
         }
       });
 
@@ -50,9 +50,19 @@ function initializeApp(data) {
 
       let div_group_name  = document.getElementById("groupName");
       reportGroup = response.data.groupName;
-      reportTimeStr = timeStampToString(response.data.eventTime[response.data.eventTime.length - 1]);
+      const eventsNum = response.data.eventTime.length - 1;
+      reportTimeStr = timeStampToString(response.data.eventTime[eventsNum][0]);
       div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
 
+      //update event date
+      let pickerOptions = document.getElementById('pickerOptions');
+      let options = '';
+      response.data.eventTime.forEach((event) => {
+        options += "<option label=\"" + event[2] + "\">" + event[1] + "</option>";
+      });
+      pickerOptions.innerHTML = options;
+
+      //update table
       let table = document.getElementById("userTable");
       response.data.groupMembers[0].forEach((name, index) => {
         let row = table.insertRow(index + HeaderRowNum);
