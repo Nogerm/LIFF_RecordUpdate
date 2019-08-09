@@ -69,6 +69,15 @@ function initializeApp(data) {
         cell_name.innerHTML = "<td>" + name + "</td>";
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
+    } else if(response.data.status === 512) {
+      swal.fire({
+        title: '沒有權限',
+        text: '請先到設定頁面，申請成為回報人員',
+        type: 'error',
+        onClose: () => {
+          liff.closeWindow();
+        }
+      });
     } else {
       swal.fire({
         title: '錯誤',
