@@ -112,6 +112,11 @@ function setSelectTime(selectedObj) {
 }
 
 function send() {
+  //add loading to button
+  const btn = document.getElementById("submitBtn");
+  btn.className = "fluid ui loading button";
+
+  //get check result
   const table = document.getElementById("userTable");
   const tableBodyArray = arrayify(table.rows);
   tableBodyArray.splice(0, 2);//remove 2 header rows
@@ -135,6 +140,7 @@ function send() {
     data: postData,
     success: function (res, status) {
       //alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
+      btn.className = "fluid ui button";
       swal.fire({
         title: '回報成功',
         text: '點擊確定關閉視窗',
@@ -145,6 +151,7 @@ function send() {
       });
     },
     error: function(xhr, ajaxOptions, thrownError) {
+      btn.className = "fluid ui button";
       swal.fire({
         title: '錯誤',
         text: "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError,
