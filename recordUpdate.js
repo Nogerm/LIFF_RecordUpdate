@@ -44,10 +44,6 @@ function initializeApp(data) {
     if(response.data.status === 200) {
       alert(JSON.stringify(response.data));
 
-      //update value
-      let div_user_name  = document.getElementById("userName");
-      div_user_name.textContent = "哈囉! " + response.data.userName;
-
       let div_group_name  = document.getElementById("groupName");
       reportGroup = response.data.groupName;
       const eventsNum = response.data.eventTime.length - 1;
