@@ -70,6 +70,7 @@ function initializeApp(data) {
         cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
       });
     } else if(response.data.status === 512) {
+      alert(JSON.stringify(response.data));
       swal.fire({
         title: '沒有權限',
         text: '請先到設定頁面，申請成為回報人員',
