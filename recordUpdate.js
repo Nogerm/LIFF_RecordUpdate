@@ -159,5 +159,5 @@ function send() {
         type: 'error'
       });
     }
-});
+  });
 }
