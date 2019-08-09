@@ -42,13 +42,13 @@ function initializeApp(data) {
     div_loading.className = "ui inverted dimmer";
 
     if(response.data.status === 200) {
-      alert(JSON.stringify(response.data));
+      //alert(JSON.stringify(response.data));
 
       let div_group_name  = document.getElementById("groupName");
       reportGroup = response.data.groupName;
       const eventsNum = response.data.eventTime.length - 1;
       reportTimeStr = timeStampToString(response.data.eventTime[eventsNum][0]);
-      div_group_name.textContent = reportGroup + ' - ' + reportTimeStr;
+      div_group_name.textContent = reportGroup + " 回報人： " + response.data.userName;
 
       //update select
       var selector = document.getElementById('selectDate');
@@ -108,7 +108,7 @@ function arrayify(collection) {
 
 function setSelectTime(selectedObj) {
   reportTimeStr = selectedObj.value;
-  alert("selected date: " + reportTimeStr);
+  //alert("selected date: " + reportTimeStr);
 }
 
 function send() {
@@ -119,14 +119,14 @@ function send() {
   var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
-  alert("check result: " + JSON.stringify(checkResult));
+  //alert("check result: " + JSON.stringify(checkResult));
 
   const postData = {
     time: reportTimeStr,
     groupName: reportGroup,
     reportData: JSON.stringify(checkResult)
   };
-  alert("post data: " + postData);
+  //alert("post data: " + postData);
 
   $.ajax({
     url: hostURL,
