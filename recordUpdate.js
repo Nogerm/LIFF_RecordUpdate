@@ -52,10 +52,11 @@ function initializeApp(data) {
 
       //update select
       var selector = document.getElementById('selectDate');
-      response.data.eventTime.forEach((event) => {
+      response.data.eventTime.forEach((event, index) => {
         var option = document.createElement('option');
-        option.value = event[1].split('T')[0].replace(/-/g, "/");
-        option.innerText = event[1].split('T')[0].replace(/-/g, "/") + " (" + event[2] + ") ";
+        option.value = timeStampToString(event[0]);
+        option.innerText = timeStampToString(event[0]) + " (" + event[2] + ") ";
+        if(index === eventsNum) option.selected = "selected";
         selector.appendChild(option);
       });
 
@@ -94,10 +95,20 @@ function timeStampToString (time){
   const month = datetime.getMonth() + 1;
   const date = datetime.getDate();
 
-  if(month < 10 && date < 10) return year + "/0" + month + "/0" + date;
-  else if(month < 10 && date >= 10) return year + "/0" + month + "/" + date;
-  else if(month >= 10 && date < 10) return year + "/" + month + "/0" + date;
-  else return year + "/" + month + "/" + date;
+  let UTC_timeStr = "";
+  if(month < 10 && date < 10) UTC_timeStr = year + "/0" + month + "/0" + date;
+  else if(month < 10 && date >= 10) UTC_timeStr = year + "/0" + month + "/" + date;
+  else if(month >= 10 && date < 10) UTC_timeStr = year + "/" + month + "/0" + date;
+  else UTC_timeStr = year + "/" + month + "/" + date;
+
+  //parse to local time
+  const local_timeStr = parseDate(UTC_timeStr);
+  alert("local_timeStr" + local_timeStr);
+  return local_timeStr;
+}
+
+function parseDate(str_date) {
+  return new Date(Date.parse(str_date));
 }
 
 function arrayify(collection) {
