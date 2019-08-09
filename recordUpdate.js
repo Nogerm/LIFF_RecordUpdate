@@ -127,6 +127,7 @@ function send() {
   //alert("check result: " + JSON.stringify(checkResult));
 
   const postData = {
+    type: 'report',
     time: reportTimeStr,
     groupName: reportGroup,
     reportData: JSON.stringify(checkResult)
