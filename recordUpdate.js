@@ -118,14 +118,14 @@ function send() {
   var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
-  //alert("check result: " + JSON.stringify(checkResult));
+  alert("check result: " + JSON.stringify(checkResult));
 
   const postData = {
     time: reportTimeStr,
     groupName: reportGroup,
     reportData: JSON.stringify(checkResult)
   };
-  //alert("post data: " + postData);
+  alert("post data: " + postData);
 
   $.ajax({
     url: hostURL,
