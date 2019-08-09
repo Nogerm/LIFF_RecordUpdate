@@ -1,0 +1,24 @@
+.table-wrapper {
+    position: relative;
+}
+
+table {
+    position: relative;
+    border-collapse: collapse;
+    width: 100%;
+    border:1px #cccccc solid;
+}
+
+td, th {
+    padding: 8px;
+}
+
+thead th {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 0;
+    background: steelblue;
+    color: #FFF;
+    min-width: 60px;
+    z-index: 1;
+}

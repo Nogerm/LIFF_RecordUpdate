@@ -41,18 +41,18 @@
     <div id="loading" class="ui active inverted dimmer">
       <div class="ui text loader">Loading</div>
     </div>
-    <div id="content" class="ui segments" style="margin-top: 0px; display: flex; height: 100%;">
-      <div class="ui segment">
-        <h2 id="userName"></h2>
-      </div>
-      <select id="selectDate" style="margin:8px;" onchange="setSelectTime(this)">
-      </select>
-      <div class="ui segment" style="flex:1;">
-        <table class="ui celled structured table unstackable" id="userTable">
+    <div class="table-wrapper">
+        <table id="userTable">
           <thead>
             <tr>
               <th colspan="2" class="ui center aligned">
                 <h2 id="groupName">小組名稱</h1>
+              </th>
+            </tr>
+            <tr>
+              <th colspan="2">
+                <select id="selectDate" style="width: 100%;" onchange="setSelectTime(this)">
+                </select>
               </th>
             </tr>
             <tr>
@@ -62,9 +62,14 @@
           </thead>
           <tbody id="tableBody">
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">
+                <button class="fluid ui blue button" onclick="send()">送出</button>
+              </td>
+            </tr>
+          </tfoot>
         </table>
-        <button class="fluid ui blue button" onclick="send()">送出</button>
-      </div>
     </div>
   </body>
 </html>
