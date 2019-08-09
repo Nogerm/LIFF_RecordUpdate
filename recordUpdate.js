@@ -90,25 +90,16 @@ function initializeApp(data) {
 
 function timeStampToString (time){
   const datetime = new Date();
-  datetime.setTime(time * 1000);
+  const timezone_shift = 8;
+  datetime.setTime((time + (timezone_shift * 60 * 60)) * 1000);
   const year = datetime.getFullYear();
   const month = datetime.getMonth() + 1;
   const date = datetime.getDate();
 
-  let UTC_timeStr = "";
-  if(month < 10 && date < 10) UTC_timeStr = year + "/0" + month + "/0" + date;
-  else if(month < 10 && date >= 10) UTC_timeStr = year + "/0" + month + "/" + date;
-  else if(month >= 10 && date < 10) UTC_timeStr = year + "/" + month + "/0" + date;
-  else UTC_timeStr = year + "/" + month + "/" + date;
-
-  //parse to local time
-  const local_timeStr = parseDate(UTC_timeStr);
-  alert("local_timeStr" + local_timeStr);
-  return local_timeStr;
-}
-
-function parseDate(str_date) {
-  return new Date(Date.parse(str_date));
+  if(month < 10 && date < 10) return year + "/0" + month + "/0" + date;
+  else if(month < 10 && date >= 10) return year + "/0" + month + "/" + date;
+  else if(month >= 10 && date < 10) return year + "/" + month + "/0" + date;
+  else return year + "/" + month + "/" + date;
 }
 
 function arrayify(collection) {
