@@ -114,7 +114,8 @@ function setSelectTime(selectedObj) {
 function send() {
   const table = document.getElementById("userTable");
   const tableBodyArray = arrayify(table.rows);
-  tableBodyArray.splice(0, 2);
+  tableBodyArray.splice(0, 2);//remove 2 header rows
+  tableBodyArray.splice(-1, 1);//remove 1 footer row
   var checkResult = tableBodyArray.map(function(row) {
     return row.cells[1].children[0].children[0].checked;
   });
