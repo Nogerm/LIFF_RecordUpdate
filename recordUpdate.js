@@ -80,6 +80,7 @@ function initializeApp(data) {
         }
       });
     } else {
+      alert(JSON.stringify(response.data));
       swal.fire({
         title: '錯誤',
         text: response.data.message,
