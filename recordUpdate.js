@@ -3,6 +3,7 @@ const HeaderRowNum = 2;
 
 var reportTimeStr = "";
 var reportGroup = "";
+var reportAtendee = [];
 
 //init
 window.onload = function (e) {
@@ -32,7 +33,7 @@ window.onload = function (e) {
 
 function initializeApp(data) {
   //check user permission
-  const query_url = hostURL + "?type=init_pack&lineId=" + data.context.userId;
+  const query_url = hostURL + "?type=report_basic&lineId=" + data.context.userId;
   axios.get(query_url)
   .then(response => {
     // Success
@@ -44,31 +45,11 @@ function initializeApp(data) {
     if(response.data.status === 200) {
       //alert(JSON.stringify(response.data));
 
-      let div_group_name  = document.getElementById("groupName");
-      reportGroup = response.data.groupName;
-      const eventsNum = response.data.eventTime.length - 1;
-      reportTimeStr = timeStampToString(response.data.eventTime[eventsNum][0]);
-      div_group_name.textContent = reportGroup + " 回報人： " + response.data.userName;
+      const defaultIdx = response.data.eventTime.length - 1;
+      allMembers = response.data.groupMembers;
+      createTableHead(response.data, defaultIdx);
+      createTableBodyByEvent(response.data.eventTime[defaultIdx], response.data.groupMembers);
 
-      //update select
-      var selector = document.getElementById('selectDate');
-      response.data.eventTime.forEach((event, index) => {
-        var option = document.createElement('option');
-        option.value = timeStampToString(event[0]);
-        option.innerText = timeStampToString(event[0]) + " (" + event[2] + ") ";
-        if(index === eventsNum) option.selected = "selected";
-        selector.appendChild(option);
-      });
-
-      //update table
-      let table = document.getElementById("userTable");
-      response.data.groupMembers[0].forEach((name, index) => {
-        let row = table.insertRow(index + HeaderRowNum);
-        let cell_name  = row.insertCell(0);
-        let cell_check = row.insertCell(1);
-        cell_name.innerHTML = "<td>" + name + "</td>";
-        cell_check.innerHTML = "<div class=\"ui checkbox\">\n <input type=\"checkbox\">\n <label>出席狀況</label>\n </div>\n </td>"; 
-      });
     } else if(response.data.status === 512) {
       //alert(JSON.stringify(response.data));
       swal.fire({
@@ -99,6 +80,54 @@ function initializeApp(data) {
   });
 }
 
+function createTableHead (data, defaultIdx) {
+  let div_group_name  = document.getElementById("groupName");
+  reportGroup = data.groupName;
+  reportTimeStr = timeStampToString(data.eventTime[defaultIdx].timestamp);
+  div_group_name.textContent = reportGroup + " 回報人： " + data.userName;
+
+  //update select
+  var selector = document.getElementById('selectDate');
+  data.eventTime.forEach((event, index) => {
+    var option = document.createElement('option');
+    option.value = timeStampToString(event.timestamp);
+    option.innerText = timeStampToString(event.timestamp) + " (" + event.type + ") ";
+    if(index === defaultIdx) option.selected = "selected";
+    selector.appendChild(option);
+  });
+
+  //set default atendee list
+  reportAtendee = JSON.parse(JSON.stringify(data.eventTime[defaultIdx].attendee));
+}
+
+function createTableBodyByEvent (event, members) {
+  //update table
+  let table = document.getElementById("userTable");
+  members.forEach((name, index) => {
+    let row = table.insertRow(index + HeaderRowNum);
+    let cell = row.insertCell(0);
+    let isAtendee = event.attendee.includes(name);
+    if(isAtendee) {
+      cell.innerHTML = "<td><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\" checked>  " + name + "  </td>"
+    } else {
+      cell.innerHTML = "<td><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\">  " + name + "  </td>"
+    }
+  });
+}
+
+function handleCheckChange(name, checked) {
+  const idx = reportAtendee.indexOf(name);
+  if(checked) {
+    // add to list if need
+    if(idx === -1) reportAtendee.push(name);
+  } else {
+    // remove from list if need
+    if(idx > -1) reportAtendee.splice(idx, 1);
+  }
+
+  console.log("Atendee list" + JSON.stringify(reportAtendee));
+}
+
 function timeStampToString (time){
   const datetime = new Date();
   const timezone_shift = 8;
@@ -123,52 +152,63 @@ function setSelectTime(selectedObj) {
 }
 
 function send() {
-  //add loading to button
-  const btn = document.getElementById("submitBtn");
-  btn.className = "fluid ui loading button";
+  
+  liff.getProfile()
+  .then(profile => {
+    //add loading to button
+    const btn = document.getElementById("submitBtn");
+    btn.className = "fluid ui loading button";
 
-  //get check result
-  const table = document.getElementById("userTable");
-  const tableBodyArray = arrayify(table.rows);
-  tableBodyArray.splice(0, 2);//remove 2 header rows
-  tableBodyArray.splice(-1, 1);//remove 1 footer row
-  var checkResult = tableBodyArray.map(function(row) {
-    return row.cells[1].children[0].children[0].checked;
-  });
-  //alert("check result: " + JSON.stringify(checkResult));
+    const postData = {
+      lineId: profile.userId,
+      type: 'report_attendee',
+      time: reportTimeStr,
+      atendee: JSON.stringify(reportAtendee)
+    };
+    //alert("post data: " + postData);
 
-  const postData = {
-    type: 'report',
-    time: reportTimeStr,
-    groupName: reportGroup,
-    reportData: JSON.stringify(checkResult)
-  };
-  //alert("post data: " + postData);
+    $.ajax({
+      url: hostURL,
+      type: "POST",
+      datatype: "json",
+      data: postData,
+      success: function (res, status) {
+        //alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
+        btn.className = "fluid ui button";
 
-  $.ajax({
-    url: hostURL,
-    type: "POST",
-    datatype: "json",
-    data: postData,
-    success: function (res, status) {
-      //alert("server result: " + JSON.stringify(res) + "\nstatus: " + status);
-      btn.className = "fluid ui button";
-      swal.fire({
-        title: '回報成功',
-        text: '點擊確定關閉視窗',
-        type: 'success',
-        onClose: () => {
-          liff.closeWindow();
+        if(res.status === 500) {
+          swal.fire({
+            title: '錯誤',
+            text: res.message,
+            type: 'error'
+          });
+        } else {
+          swal.fire({
+            title: '回報成功',
+            text: '點擊確定關閉視窗',
+            type: 'success',
+            onClose: () => {
+              liff.closeWindow();
+            }
+          });
         }
-      });
-    },
-    error: function(xhr, ajaxOptions, thrownError) {
-      btn.className = "fluid ui button";
-      swal.fire({
-        title: '錯誤',
-        text: "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError,
-        type: 'error'
-      });
-    }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        btn.className = "fluid ui button";
+        swal.fire({
+          title: '錯誤',
+          text: "post error: " + xhr.responseText + "\najaxOptions: " + ajaxOptions + "\nthrownError: " + thrownError,
+          type: 'error'
+        });
+      }
+    });
+  })
+  .catch((err) => {
+    console.log('error', err);
+    swal.fire({
+      title: '錯誤',
+      text: err,
+      type: 'error'
+    });
   });
 }

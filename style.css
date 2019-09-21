@@ -9,8 +9,14 @@ table {
     border:1px #cccccc solid;
 }
 
-td, th {
+th {
     padding: 8px;
+}
+
+td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 thead th {
