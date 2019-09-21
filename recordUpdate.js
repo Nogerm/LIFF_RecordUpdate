@@ -171,7 +171,7 @@ function send() {
       time: reportTimeStr,
       atendee: JSON.stringify(reportAtendee)
     };
-    alert("post data: " + postData);
+    alert("post data: " + JSON.stringify(postData));
 
     $.ajax({
       url: hostURL,
