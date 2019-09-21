@@ -127,8 +127,6 @@ function handleCheckChange(name, checked) {
     // remove from list if need
     if(idx > -1) reportAtendee.splice(idx, 1);
   }
-
-  console.log("Atendee list" + JSON.stringify(reportAtendee));
 }
 
 function timeStampToString (time){
@@ -152,6 +150,8 @@ function arrayify(collection) {
 function setSelectTime(selectedObj) {
   reportTimeStamp = selectedObj.value;
   alert("selected date: " + reportTimeStamp);
+
+  alert("allEvents: " + allEvents);
 
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
 
