@@ -98,12 +98,12 @@ function createTableHead (data, defaultIdx) {
     if(index === defaultIdx) option.selected = "selected";
     selector.appendChild(option);
   });
-
-  //set default atendee list
-  reportAtendee = JSON.parse(JSON.stringify(data.eventTime[defaultIdx].attendee));
 }
 
 function createTableBodyByEvent (event, members) {
+  //set default atendee list
+  reportAtendee = JSON.parse(JSON.stringify(event.attendee));
+
   //update table
   let table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
   members.forEach((name, index) => {
@@ -172,7 +172,6 @@ function send() {
       time: reportTimeStamp,
       atendee: JSON.stringify(reportAtendee)
     };
-    alert("post data: " + JSON.stringify(postData));
 
     $.ajax({
       url: hostURL,
