@@ -93,7 +93,7 @@ function createTableHead (data, defaultIdx) {
   var selector = document.getElementById('selectDate');
   data.eventTime.forEach((event, index) => {
     var option = document.createElement('option');
-    option.value = timeStampToString(event.timestamp);
+    option.value = event.timestamp;
     option.innerText = timeStampToString(event.timestamp) + " (" + event.type + ") ";
     if(index === defaultIdx) option.selected = "selected";
     selector.appendChild(option);
