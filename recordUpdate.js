@@ -1,7 +1,7 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
 const HeaderRowNum = 2;
 
-var reportTimeStr = "";
+var reportTimeStamp = 0;
 var reportGroup = "";
 var allMembers = [];
 var allEvents = [];
@@ -86,7 +86,7 @@ function initializeApp(data) {
 function createTableHead (data, defaultIdx) {
   let div_group_name  = document.getElementById("groupName");
   reportGroup = data.groupName;
-  reportTimeStr = timeStampToString(data.eventTime[defaultIdx].timestamp);
+  reportTimeStamp = data.eventTime[defaultIdx].timestamp;
   div_group_name.textContent = reportGroup + " 回報人： " + data.userName;
 
   //update select
@@ -150,10 +150,10 @@ function arrayify(collection) {
 }
 
 function setSelectTime(selectedObj) {
-  reportTimeStr = selectedObj.value;
-  //alert("selected date: " + reportTimeStr);
+  reportTimeStamp = selectedObj.value;
+  //alert("selected date: " + reportTimeStamp);
 
-  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStr);
+  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
 
   alert("selectedEvent: " + JSON.stringify(selectedEvent));
 
@@ -171,7 +171,7 @@ function send() {
     const postData = {
       lineId: profile.userId,
       type: 'report_attendee',
-      time: reportTimeStr,
+      time: reportTimeStamp,
       atendee: JSON.stringify(reportAtendee)
     };
     alert("post data: " + JSON.stringify(postData));
