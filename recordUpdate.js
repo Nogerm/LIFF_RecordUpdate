@@ -151,7 +151,7 @@ function arrayify(collection) {
 
 function setSelectTime(selectedObj) {
   reportTimeStamp = selectedObj.value;
-  //alert("selected date: " + reportTimeStamp);
+  alert("selected date: " + reportTimeStamp);
 
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
 
