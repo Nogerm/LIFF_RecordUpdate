@@ -118,6 +118,10 @@ function createTableBodyByEvent (event, members) {
   });
 }
 
+function clearTableBody () {
+  $("#userTable > tbody").html("");
+}
+
 function handleCheckChange(name, checked) {
   const idx = reportAtendee.indexOf(name);
   if(checked) {
@@ -148,15 +152,14 @@ function arrayify(collection) {
 }
 
 function setSelectTime(selectedObj) {
-  reportTimeStamp = selectedObj.value;
+  reportTimeStamp = parseInt(selectedObj.value);
   alert("selected stamp: " + JSON.stringify(reportTimeStamp));
-
-  alert("allEvents: " + JSON.stringify(allEvents));
 
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
 
   alert("selectedEvent: " + JSON.stringify(selectedEvent));
 
+  clearTableBody();
   createTableBodyByEvent(selectedEvent, allMembers);
 }
 
