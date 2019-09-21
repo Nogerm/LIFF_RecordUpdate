@@ -154,6 +154,9 @@ function setSelectTime(selectedObj) {
   //alert("selected date: " + reportTimeStr);
 
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStr);
+
+  alert("selectedEvent: " + JSON.stringify(selectedEvent));
+
   createTableBodyByEvent(selectedEvent, allMembers);
 }
 
