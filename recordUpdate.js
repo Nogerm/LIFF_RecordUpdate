@@ -111,9 +111,9 @@ function createTableBodyByEvent (event, members) {
     let cell = row.insertCell(0);
     let isAtendee = event.attendee.includes(name);
     if(isAtendee) {
-      cell.innerHTML = "<td><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\" checked>  " + name + "  </td>"
+      cell.innerHTML = "<td><label><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\" checked/>  " + name + "  </label></td>"
     } else {
-      cell.innerHTML = "<td><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\">  " + name + "  </td>"
+      cell.innerHTML = "<td><label><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\"/>  " + name + "  </label></td>"
     }
   });
 }

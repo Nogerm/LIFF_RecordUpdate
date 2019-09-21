@@ -28,3 +28,7 @@ thead th {
     min-width: 60px;
     z-index: 1;
 }
+
+label{
+  display:block;
+}
