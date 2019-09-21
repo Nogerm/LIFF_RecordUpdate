@@ -105,9 +105,9 @@ function createTableHead (data, defaultIdx) {
 
 function createTableBodyByEvent (event, members) {
   //update table
-  let table = document.getElementById("userTable");
+  let table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
   members.forEach((name, index) => {
-    let row = table.insertRow(index + HeaderRowNum);
+    let row = table.insertRow(index);
     let cell = row.insertCell(0);
     let isAtendee = event.attendee.includes(name);
     if(isAtendee) {
@@ -119,7 +119,7 @@ function createTableBodyByEvent (event, members) {
 }
 
 function clearTableBody () {
-  $("#userTable > tbody").html("");
+  $("#tableBody").empty();
 }
 
 function handleCheckChange(name, checked) {
@@ -153,12 +153,7 @@ function arrayify(collection) {
 
 function setSelectTime(selectedObj) {
   reportTimeStamp = parseInt(selectedObj.value);
-  alert("selected stamp: " + JSON.stringify(reportTimeStamp));
-
-  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
-
-  alert("selectedEvent: " + JSON.stringify(selectedEvent));
-
+  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp)[0];
   clearTableBody();
   createTableBodyByEvent(selectedEvent, allMembers);
 }
