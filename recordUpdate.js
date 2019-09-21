@@ -3,6 +3,8 @@ const HeaderRowNum = 2;
 
 var reportTimeStr = "";
 var reportGroup = "";
+var allMembers = [];
+var allEvents = [];
 var reportAtendee = [];
 
 //init
@@ -47,6 +49,7 @@ function initializeApp(data) {
 
       const defaultIdx = response.data.eventTime.length - 1;
       allMembers = response.data.groupMembers;
+      allEvents = response.data.eventTime;
       createTableHead(response.data, defaultIdx);
       createTableBodyByEvent(response.data.eventTime[defaultIdx], response.data.groupMembers);
 
@@ -149,6 +152,9 @@ function arrayify(collection) {
 function setSelectTime(selectedObj) {
   reportTimeStr = selectedObj.value;
   //alert("selected date: " + reportTimeStr);
+
+  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStr);
+  createTableBodyByEvent(selectedEvent, allMembers);
 }
 
 function send() {
