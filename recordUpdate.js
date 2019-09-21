@@ -149,9 +149,9 @@ function arrayify(collection) {
 
 function setSelectTime(selectedObj) {
   reportTimeStamp = selectedObj.value;
-  alert("selected date: " + reportTimeStamp);
+  alert("selected stamp: " + JSON.stringify(reportTimeStamp));
 
-  alert("allEvents: " + allEvents);
+  alert("allEvents: " + JSON.stringify(allEvents));
 
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp);
 
