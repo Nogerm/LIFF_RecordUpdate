@@ -188,7 +188,7 @@ function send() {
             text: res.message,
             type: 'error'
           });
-        } else {
+        } else if(res.status === 200) {
           swal.fire({
             title: '回報成功',
             text: '點擊確定關閉視窗',
