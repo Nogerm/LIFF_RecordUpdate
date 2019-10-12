@@ -2,6 +2,7 @@ const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw
 const HeaderRowNum = 2;
 
 var reportTimeStamp = 0;
+var reportType = "";
 var reportGroup = "";
 var allMembers = [];
 var allEvents = [];
@@ -97,6 +98,7 @@ function createTableHead (data, defaultIdx) {
     option.innerText = timeStampToString(event.timestamp) + " (" + event.type + ") ";
     if(index === defaultIdx) option.selected = "selected";
     selector.appendChild(option);
+    reportType = option.innerText.match(/\((.*?)\)/)[1];
   });
 }
 
@@ -153,6 +155,7 @@ function arrayify(collection) {
 
 function setSelectTime(selectedObj) {
   reportTimeStamp = parseInt(selectedObj.value);
+  reportType = selectedObj.innerText.match(/\((.*?)\)/)[1];
   const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp)[0];
   clearTableBody();
   createTableBodyByEvent(selectedEvent, allMembers);
@@ -170,6 +173,7 @@ function send() {
       lineId: profile.userId,
       type: 'report_attendee',
       time: reportTimeStamp,
+      reportType: reportType,
       atendee: JSON.stringify(reportAtendee)
     };
 
