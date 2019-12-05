@@ -10,7 +10,31 @@ var reportAtendee = [];
 
 //init
 window.onload = function (e) {
-
+  liff.init(
+    {
+      liffId: "1602321395-7wQx5L66"
+    },
+    data => {
+      console.log('LIFF initialization ok', data)
+      if (liff.isLoggedIn()) {
+        console.log('LIFF is logged in')
+        liff.getProfile()
+          .then(profile => {
+            console.log('getProfile ok displayName', profile.displayName)
+          })
+          .catch((err) => {
+            console.log('getProfile error', err)
+          })
+      } else {
+        console.log('LIFF is not logged in')
+        liff.login();
+      }
+    },
+    err => {
+      console.log('LIFF initialization failed', err)
+    }
+  )
+/*
   liff.init(
     data => {
       // Now you can call LIFF API
@@ -31,7 +55,7 @@ window.onload = function (e) {
       let div_loading = document.getElementById("loading");
       div_loading.className = "ui inverted dimmer";
     }
-  );
+  );*/
 };
 
 function initializeApp(data) {
