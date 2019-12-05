@@ -21,17 +21,21 @@ window.onload = function (e) {
         liff.getProfile()
           .then(profile => {
             console.log('getProfile ok displayName', profile.displayName)
+            hideLoading();
           })
           .catch((err) => {
             console.log('getProfile error', err)
+            hideLoading();
           })
       } else {
         console.log('LIFF is not logged in')
         liff.login();
+        hideLoading();
       }
     },
     err => {
       console.log('LIFF initialization failed', err)
+      hideLoading();
     }
   )
 /*
@@ -57,6 +61,11 @@ window.onload = function (e) {
     }
   );*/
 };
+
+function hideLoading() {
+  let div_loading = document.getElementById("loading");
+  div_loading.className = "ui inverted dimmer";
+}
 
 function initializeApp(data) {
   //check user permission
