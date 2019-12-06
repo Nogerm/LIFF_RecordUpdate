@@ -39,28 +39,6 @@ window.onload = function (e) {
       hideLoading();
     }
   )
-/*
-  liff.init(
-    data => {
-      // Now you can call LIFF API
-      initializeApp(data);
-    },
-    err => {
-      // LIFF initialization failed
-      swal.fire({
-        title: '錯誤',
-        text: 'LIFF視窗初始化失敗',
-        type: 'error',
-        onClose: () => {
-          //liff.closeWindow();
-        }
-      });
-
-      //show/hide element
-      let div_loading = document.getElementById("loading");
-      div_loading.className = "ui inverted dimmer";
-    }
-  );*/
 };
 
 function hideLoading() {
