@@ -223,7 +223,7 @@ function send() {
       type: 'report_attendee',
       time: allEvents[selectedEventIndex].timestamp,
       reportType: allEvents[selectedEventIndex].type,
-      atendee: JSON.stringify(reportAtendee)
+      attendee: JSON.stringify(reportAtendee)
     };
 
     $.ajax({
