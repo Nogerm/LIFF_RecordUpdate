@@ -1,18 +1,18 @@
 const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
-const HeaderRowNum = 2;
+const liffID = "1602321395-7wQx5L66";
 
-var reportTimeStamp = 0;
-var reportType = "";
-var reportGroup = "";
 var allMembers = [];
 var allEvents = [];
 var reportAtendee = [];
+
+var selectedEventId = undefined;
+var selectedEventIndex = undefined;
 
 //init
 window.onload = function (e) {
   liff.init(
     {
-      liffId: "1602321395-7wQx5L66"
+      liffId: liffID
     },
     data => {
       console.log('LIFF initialization ok', data)
@@ -20,8 +20,9 @@ window.onload = function (e) {
         console.log('LIFF is logged in')
         liff.getProfile()
           .then(profile => {
-            console.log('getProfile ok displayName', profile.displayName)
+            console.log('getProfile ok displayName', profile.displayName);
             hideLoading();
+            initializeApp(profile);
           })
           .catch((err) => {
             console.log('getProfile error', err)
@@ -67,9 +68,10 @@ function hideLoading() {
   div_loading.className = "ui inverted dimmer";
 }
 
-function initializeApp(data) {
+function initializeApp(profile) {
+  console.log("initializeApp" + JSON.stringify(profile));
   //check user permission
-  const query_url = hostURL + "?type=report_basic&lineId=" + data.context.userId;
+  const query_url = hostURL + "?type=report_basic&lineId=" + profile.userId;
   axios.get(query_url)
   .then(response => {
     // Success
@@ -79,16 +81,15 @@ function initializeApp(data) {
     div_loading.className = "ui inverted dimmer";
 
     if(response.data.status === 200) {
-      //alert(JSON.stringify(response.data));
-
-      const defaultIdx = response.data.eventTime.length - 1;
-      allMembers = response.data.groupMembers;
+      //update time container
       allEvents = response.data.eventTime;
-      createTableHead(response.data, defaultIdx);
-      createTableBodyByEvent(response.data.eventTime[defaultIdx], response.data.groupMembers);
+      updateTimeContainer(allEvents.reverse());
+
+      //update member container
+      allMembers = response.data.groupMembers;
+      updateMemberContainer(allMembers);
 
     } else if(response.data.status === 512) {
-      //alert(JSON.stringify(response.data));
       swal.fire({
         title: '沒有權限',
         text: '請先到設定頁面，申請成為回報人員',
@@ -98,7 +99,6 @@ function initializeApp(data) {
         }
       });
     } else {
-      //alert(JSON.stringify(response.data));
       swal.fire({
         title: '錯誤',
         text: response.data.message,
@@ -117,85 +117,101 @@ function initializeApp(data) {
   });
 }
 
-function createTableHead (data, defaultIdx) {
-  let div_group_name  = document.getElementById("groupName");
-  reportGroup = data.groupName;
-  reportTimeStamp = data.eventTime[defaultIdx].timestamp;
-  div_group_name.textContent = reportGroup + " 回報人： " + data.userName;
-
-  //update select
-  var selector = document.getElementById('selectDate');
-  data.eventTime.forEach((event, index) => {
-    var option = document.createElement('option');
-    option.value = event.timestamp;
-    option.innerText = timeStampToString(event.timestamp) + " (" + event.type + ") ";
-    if(index === defaultIdx) option.selected = "selected";
-    selector.appendChild(option);
-    reportType = option.innerText.match(/\((.*?)\)/)[1];
-  });
+function getEventId(event) {
+  return event.timestring + event.type;
 }
 
-function createTableBodyByEvent (event, members) {
-  //set default atendee list
-  reportAtendee = JSON.parse(JSON.stringify(event.attendee));
+function updateTimeContainer(events) {
+  const timeContainer = document.getElementById("time-container");
 
-  //update table
-  let table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
-  members.forEach((name, index) => {
-    let row = table.insertRow(index);
-    let cell = row.insertCell(0);
-    let isAtendee = event.attendee.includes(name);
-    if(isAtendee) {
-      cell.innerHTML = "<td><label><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\" checked/>  " + name + "  </label></td>"
-    } else {
-      cell.innerHTML = "<td><label><input type=\"checkbox\" id=\"" + name + "\" onclick=\"handleCheckChange(this.id, this.checked)\"/>  " + name + "  </label></td>"
+  selectedEventIndex = 0;
+  if(selectedEventId === undefined) selectedEventId = getEventId(events[selectedEventIndex]);
+  reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
+  
+  events.forEach((event, index) => {
+    //create time button
+    let btn = document.createElement("button");
+    btn.innerHTML = event.timestring.substr(4,2) + '/' + event.timestring.substr(6,2) + '<br>' + event.type;
+    btn.setAttribute("class", (selectedEventId === getEventId(event)) ? "ui primary button" : "ui primary basic button");
+	  btn.setAttribute("id", getEventId(event));
+    btn.setAttribute("value", index);
+    btn.style.marginBottom = "8px";
+    btn.onclick = function(element) {
+      selectedEventId = element.target.id;
+      selectedEventIndex = element.target.value;
+      reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
+      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee);
+
+      //redraw all time buttons
+      let children = timeContainer.children;
+      for (var i = 0; i < children.length; i++) {
+        let button = children[i];
+        button.className = (button.id === selectedEventId) ? "ui primary button" : "ui primary basic button";
+      }
+
+      //redraw all members
+      updateMemberContainer(allMembers);
     }
+    timeContainer.appendChild(btn);
   });
 }
 
-function clearTableBody () {
-  $("#tableBody").empty();
-}
+function updateMemberContainer(memberGroups) {
+  const memberContainer = document.getElementById("member-container");
+  while (memberContainer.firstChild) { memberContainer.removeChild(memberContainer.firstChild)}
 
-function handleCheckChange(name, checked) {
-  const idx = reportAtendee.indexOf(name);
-  if(checked) {
-    // add to list if need
-    if(idx === -1) reportAtendee.push(name);
-  } else {
-    // remove from list if need
-    if(idx > -1) reportAtendee.splice(idx, 1);
-  }
-}
+  memberGroups.forEach((memberGroup, index) => {
 
-function timeStampToString (time){
-  const datetime = new Date();
-  const timezone_shift = 8;
-  datetime.setTime((time + (timezone_shift * 60 * 60)) * 1000);
-  const year = datetime.getFullYear();
-  const month = datetime.getMonth() + 1;
-  const date = datetime.getDate();
+    let segment = document.createElement("div");
+    segment.setAttribute("class", "ui segment");
 
-  if(month < 10 && date < 10) return year + "/0" + month + "/0" + date;
-  else if(month < 10 && date >= 10) return year + "/0" + month + "/" + date;
-  else if(month >= 10 && date < 10) return year + "/" + month + "/0" + date;
-  else return year + "/" + month + "/" + date;
+    let groupTitle = document.createElement("h2");
+    groupTitle.innerText = memberGroup.groupName;
+    segment.appendChild(groupTitle);
+
+    console.log(JSON.stringify(reportAtendee));
+
+    memberGroup.groupMember.forEach((memberName, index) => {
+      //create member button
+      let btn = document.createElement("button");
+      btn.innerHTML = memberName;
+      btn.setAttribute("class", (reportAtendee.indexOf(memberName) > -1) ? "ui primary button" : "ui primary basic button");
+      btn.setAttribute("id", memberName);
+      btn.setAttribute("value", memberName);
+      btn.style.marginBottom = "8px";
+      btn.onclick = function(element) {
+        if(element.target.className === "ui primary button") {
+          //currently selected, to deselect
+          const deleteIdx = reportAtendee.indexOf(element.target.value);
+          if(deleteIdx > -1) reportAtendee.splice(deleteIdx, 1);
+        } else if(element.target.className === "ui primary basic button"){
+          //currently deselected, to select
+          if(reportAtendee.indexOf(element.target.value) === -1) reportAtendee.push(element.target.value);
+        }
+        console.log(JSON.stringify(reportAtendee));
+
+        //redraw all members
+        let children = segment.children;
+        for (var i = 1; i < children.length; i++) {
+          let button = children[i];
+          button.className = (reportAtendee.indexOf(button.value) > -1) ? "ui primary button" : "ui primary basic button";
+        }
+      }
+      segment.appendChild(btn);
+    });
+
+    memberContainer.appendChild(segment);
+  });
 }
 
 function arrayify(collection) {
   return Array.prototype.slice.call(collection);
 }
 
-function setSelectTime(selectedObj) {
-  reportTimeStamp = parseInt(selectedObj.value);
-  reportType = selectedObj.innerText.match(/\((.*?)\)/)[1];
-  const selectedEvent = allEvents.filter(event => event.timestamp === reportTimeStamp)[0];
-  clearTableBody();
-  createTableBodyByEvent(selectedEvent, allMembers);
-}
-
 function send() {
   
+  console.log("reportAtendee:" + JSON.stringify(reportAtendee));
+
   liff.getProfile()
   .then(profile => {
     //add loading to button
@@ -205,8 +221,8 @@ function send() {
     const postData = {
       lineId: profile.userId,
       type: 'report_attendee',
-      time: reportTimeStamp,
-      reportType: reportType,
+      time: allEvents[selectedEventIndex].timestamp,
+      reportType: allEvents[selectedEventIndex].type,
       atendee: JSON.stringify(reportAtendee)
     };
 
