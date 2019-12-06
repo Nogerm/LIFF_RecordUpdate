@@ -21,42 +21,46 @@ window.onload = function (e) {
         liff.getProfile()
           .then(profile => {
             console.log('getProfile ok displayName', profile.displayName);
-            hideLoading();
             initializeApp(profile);
           })
           .catch((err) => {
-            console.log('getProfile error', err)
-            hideLoading();
+            console.log('getProfile error', err);
           })
       } else {
-        console.log('LIFF is not logged in')
+        console.log('LIFF is not logged in');
         liff.login();
-        hideLoading();
       }
     },
     err => {
-      console.log('LIFF initialization failed', err)
-      hideLoading();
+      console.log('LIFF initialization failed', err);
     }
   )
 };
 
-function hideLoading() {
-  let div_loading = document.getElementById("loading");
-  div_loading.className = "ui inverted dimmer";
+function showSegmentLoading() {
+  let time_area = document.getElementById("time-area");
+  time_area.className = "ui segment loading";
+  let member_area = document.getElementById("member-area");
+  member_area.style.display = "none";
+}
+
+function hideSegmentLoading() {
+  let time_area = document.getElementById("time-area");
+  time_area.className = "ui segment";
+  let member_area = document.getElementById("member-area");
+  member_area.style.display = "inherit";
 }
 
 function initializeApp(profile) {
   console.log("initializeApp" + JSON.stringify(profile));
-  //check user permission
+
+  //query data
+  showSegmentLoading();
   const query_url = hostURL + "?type=report_basic&lineId=" + profile.userId;
   axios.get(query_url)
   .then(response => {
     // Success
-
-    //show/hide element
-    let div_loading = document.getElementById("loading");
-    div_loading.className = "ui inverted dimmer";
+    hideSegmentLoading();
 
     if(response.data.status === 200) {
       //update time container
@@ -86,6 +90,7 @@ function initializeApp(profile) {
   })
   .catch(error => {
     // Error
+    hideSegmentLoading();
     console.log(error);
     swal.fire({
       title: '錯誤',

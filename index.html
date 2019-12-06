@@ -38,23 +38,17 @@
   </head>
 
   <body>
-    <div id="loading" class="ui active inverted dimmer">
-      <div class="ui text loader">Loading</div>
-    </div>
     <div class="ui segments">
-      <div class="ui segment">
-        <h2>Group Name</h2>
-      </div>
-      <div class="ui segment">
-        <h2>Report Time</h2>
+      <div id="time-area" class="ui segment">
+        <h3>1. 選擇聚會</h3>
         <div id="time-container"></div>
       </div>
-      <div class="ui segment">
-        <h2>Report Group</h2>
+      <div id="member-area" class="ui segment">
+        <h3>2. 選擇出席成員</h3>
         <div id="member-container" class="ui segments"></div>
       </div>
       <div class="ui segment">
-        <button id="submitBtn" class="fluid ui button" style="background-color:steelblue;color:white;" onclick="send()">Send</button>
+        <button id="submitBtn" class="fluid ui button" style="background-color:steelblue;color:white;" onclick="send()">回報出席</button>
       </div>
     </div>
   </body>
