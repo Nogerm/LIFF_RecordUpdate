@@ -230,7 +230,7 @@ function send() {
             text: '點擊確定關閉視窗',
             type: 'success',
             onClose: () => {
-              liff.closeWindow();
+              //liff.closeWindow();
             }
           });
         }
