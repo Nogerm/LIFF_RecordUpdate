@@ -9,6 +9,8 @@ var suspendGroup = [];
 var selectedEventId = undefined;
 var selectedEventIndex = undefined;
 var isSelectedEventSuspend = false;
+var isSelectedEventGlobal = false;
+var isSelectedEventNeedMoneyCount = false;
 
 //init
 window.onload = function (e) {
@@ -112,12 +114,14 @@ function updateTimeContainer(events) {
   if (selectedEventId === undefined) selectedEventId = getEventId(events[selectedEventIndex]);
   reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
   isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
+  isSelectedEventGlobal = allEvents[selectedEventIndex].isGlobal;
+  isSelectedEventNeedMoneyCount = allEvents[selectedEventIndex].needMoneyCount;
 
   events.forEach((event, index) => {
     //create time button
     let btn = document.createElement("button");
     btn.innerHTML = event.timestring.substr(4, 2) + '/' + event.timestring.substr(6, 2) + '<br>' + event.type;
-    btn.setAttribute("class", (selectedEventId === getEventId(event)) ? "ui primary button" : "ui primary basic button");
+    btn.setAttribute("class", (selectedEventId === getEventId(event)) ? "ui teal button" : "ui teal basic button");
     btn.setAttribute("id", getEventId(event));
     btn.setAttribute("value", index);
     btn.style.marginBottom = "8px";
@@ -126,13 +130,15 @@ function updateTimeContainer(events) {
       selectedEventIndex = element.target.value;
       reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
       isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
-      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nisSuspend: " + isSelectedEventSuspend);
+      isSelectedEventGlobal = allEvents[selectedEventIndex].isGlobal;
+      isSelectedEventNeedMoneyCount = allEvents[selectedEventIndex].needMoneyCount;
+      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nis suspend: " + isSelectedEventSuspend + "\nis global: " + isSelectedEventGlobal + "\nneed money count: " + isSelectedEventNeedMoneyCount);
 
       //redraw all time buttons
       let children = timeContainer.children;
       for (var i = 0; i < children.length; i++) {
         let button = children[i];
-        button.className = (button.id === selectedEventId) ? "ui primary button" : "ui primary basic button";
+        button.className = (button.id === selectedEventId) ? "ui teal button" : "ui teal basic button";
       }
 
       //redraw all members
@@ -148,7 +154,16 @@ function updateMemberContainer(memberGroups) {
     memberContainer.removeChild(memberContainer.firstChild)
   }
 
-  memberGroups.forEach((memberGroup, index) => {
+  //if global event, list all member, else list group only
+  displayGroups = [];
+  if (isSelectedEventGlobal) {
+    displayGroups = memberGroups;
+  } else {
+    displayGroups = memberGroups.filter(group => group.groupName === allEvents[selectedEventIndex].type)
+  }
+  console.log('displayGroups' + JSON.stringify(displayGroups))
+
+  displayGroups.forEach((memberGroup, index) => {
 
     let segment = document.createElement("div");
     segment.setAttribute("class", "ui segment");
