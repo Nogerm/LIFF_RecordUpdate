@@ -4,6 +4,7 @@ const liffID = "1653896800-lZBLPy1z";
 var allMembers = [];
 var allEvents = [];
 var reportAtendee = [];
+var suspendGroup = [];
 
 var selectedEventId = undefined;
 var selectedEventIndex = undefined;
@@ -149,9 +150,40 @@ function updateMemberContainer(memberGroups) {
     let segment = document.createElement("div");
     segment.setAttribute("class", "ui segment");
 
+    //title
+    let titleContainer = document.createElement("div");
+    titleContainer.setAttribute("style", "display: flex;justify-content: space-between;align-items: baseline;");
     let groupTitle = document.createElement("h2");
     groupTitle.innerText = memberGroup.groupName;
-    segment.appendChild(groupTitle);
+    titleContainer.appendChild(groupTitle)
+
+    //checkbox
+    let checkboxContainer = document.createElement("div");
+    checkboxContainer.setAttribute("class", "ui checkbox");
+    let checkboxLabel = document.createElement("label");
+    checkboxLabel.innerText = "暫停聚會";
+    let checkboxInput = document.createElement("input");
+    checkboxInput.setAttribute("type", "checkbox");
+    checkboxInput.setAttribute("id", memberGroup.groupName);
+    checkboxInput.onchange = function (event) {
+      const groupName = event.target.id
+      console.log(groupName + " " + JSON.stringify(event.target.checked));
+      if (event.target.checked) {
+        //suspend
+        if (suspendGroup.indexOf(groupName) === -1) suspendGroup.push(groupName);
+      } else {
+        //normal, remove from suspend list
+        const deleteIdx = suspendGroup.indexOf(groupName);
+        if (deleteIdx > -1) suspendGroup.splice(deleteIdx, 1);
+      }
+      console.log(JSON.stringify(suspendGroup));
+    }
+
+    checkboxContainer.appendChild(checkboxInput);
+    checkboxContainer.appendChild(checkboxLabel);
+    titleContainer.appendChild(checkboxContainer);
+
+    segment.appendChild(titleContainer);
 
     console.log(JSON.stringify(reportAtendee));
 
@@ -194,7 +226,7 @@ function arrayify(collection) {
 
 function send() {
 
-  console.log("reportAtendee:" + JSON.stringify(reportAtendee));
+  //console.log("reportAtendee:" + JSON.stringify(reportAtendee));
 
   liff.getProfile()
     .then(profile => {
@@ -207,8 +239,10 @@ function send() {
         type: 'report_attendee',
         time: allEvents[selectedEventIndex].timestamp,
         reportType: allEvents[selectedEventIndex].type,
-        attendee: JSON.stringify(reportAtendee)
+        attendee: JSON.stringify(reportAtendee),
+        susGroup: JSON.stringify(suspendGroup)
       };
+      //console.log("postData:" + JSON.stringify(postData));
 
       $.ajax({
         url: hostURL,
