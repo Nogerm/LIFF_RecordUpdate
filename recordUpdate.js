@@ -171,7 +171,7 @@ function updateMemberContainer(memberGroups) {
   //if global event, list all member, else list group only
   displayGroups = [];
   if (isSelectedEventGlobal) {
-    displayGroups = memberGroups;
+    displayGroups = memberGroups.filter(group => group.groupName !== "講員");
   } else {
     displayGroups = memberGroups.filter(group => group.groupName === allEvents[selectedEventIndex].type)
   }
@@ -258,6 +258,44 @@ function updateMemberContainer(memberGroups) {
 
     memberContainer.appendChild(segment);
   });
+
+  //if has "講員", append item
+  if (memberGroups.findIndex(group => group.groupName === "講員") > -1 && allEvents[selectedEventIndex].type === "主日") {
+    let segment = document.createElement("div");
+    segment.setAttribute("class", "ui segment");
+
+    let groupTitle = document.createElement("h2");
+    groupTitle.innerText = "講員";
+
+    let dropdown = document.createElement("div");
+    dropdown.setAttribute("class", "ui fluid selection dropdown");
+    let selectInput = document.createElement("input");
+    selectInput.setAttribute("type", "hidden");
+    let selectIcon = document.createElement("i");
+    selectIcon.setAttribute("class", "dropdown icon");
+    let selectPlaceHolder = document.createElement("div");
+    selectPlaceHolder.setAttribute("class", "default text");
+    selectPlaceHolder.innerText = "選擇講員數量";
+    let selectMenu = document.createElement("div");
+    selectMenu.setAttribute("class", "menu");
+
+    for (let idx = 1; idx <= 10; idx++) {
+      let selectOption = document.createElement("div");
+      selectOption.setAttribute("class", "item");
+      selectOption.setAttribute("data-value", idx);
+      selectOption.innerText = idx.toString();
+      selectMenu.appendChild(selectOption);
+    }
+
+    dropdown.appendChild(selectInput);
+    dropdown.appendChild(selectIcon);
+    dropdown.appendChild(selectPlaceHolder);
+    dropdown.appendChild(selectMenu);
+
+    segment.appendChild(groupTitle);
+    segment.appendChild(dropdown);
+    memberContainer.appendChild(segment);
+  }
 }
 
 function arrayify(collection) {
