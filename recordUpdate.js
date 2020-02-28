@@ -114,6 +114,9 @@ function showMoneyCountIfNeed() {
   } else {
     moneyArea.style.display = "none";
   }
+
+  let moneyInput = document.getElementById("money-value");
+  moneyInput.value = allEvents[selectedEventIndex].moneyCount;
 }
 
 function updateTimeContainer(events) {
@@ -143,7 +146,7 @@ function updateTimeContainer(events) {
       isSelectedEventGlobal = allEvents[selectedEventIndex].isGlobal;
       isSelectedEventNeedMoneyCount = allEvents[selectedEventIndex].needMoneyCount;
       showMoneyCountIfNeed()
-      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nis suspend: " + isSelectedEventSuspend + "\nis global: " + isSelectedEventGlobal + "\nneed money count: " + isSelectedEventNeedMoneyCount);
+      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nis suspend: " + isSelectedEventSuspend + "\nis global: " + isSelectedEventGlobal + "\nneed money count: " + isSelectedEventNeedMoneyCount + "\nmoney: " + allEvents[selectedEventIndex].moneyCount);
 
       //redraw all time buttons
       let children = timeContainer.children;
@@ -277,7 +280,8 @@ function send() {
         time: allEvents[selectedEventIndex].timestamp,
         reportType: allEvents[selectedEventIndex].type,
         attendee: JSON.stringify(reportAtendee),
-        susGroup: JSON.stringify(suspendGroup)
+        susGroup: JSON.stringify(suspendGroup),
+        moneyCount: document.getElementById("money-value").value
       };
       console.log("postData:" + JSON.stringify(postData));
 
@@ -303,11 +307,12 @@ function send() {
               type: 'success',
               onClose: () => {
                 const timeStr = allEvents[selectedEventIndex].timestring.substr(0, 4) + '/' + allEvents[selectedEventIndex].timestring.substr(4, 2) + '/' + allEvents[selectedEventIndex].timestring.substr(6, 2);
-                const attendeeStr = suspendGroup.length > 0 ? '聚會暫停' : ('聚會人數: ' + reportAtendee.length + '人')
-                console.log(timeStr + '\n' + attendeeStr);
+                const attendeeStr = suspendGroup.length > 0 ? '\n聚會暫停' : ('\n聚會人數: ' + reportAtendee.length + '人')
+                const moneyStr = isSelectedEventNeedMoneyCount ? '\n奉獻金額: ' + document.getElementById("money-value").value + '元' : "";
+                console.log(timeStr + '\n' + allEvents[selectedEventIndex].type + attendeeStr + moneyStr);
                 liff.sendMessages([{
                     type: 'text',
-                    text: '完成回報：\n' + timeStr + '\n' + allEvents[selectedEventIndex].type + '\n' + attendeeStr
+                    text: '完成回報：\n' + timeStr + '\n' + allEvents[selectedEventIndex].type + attendeeStr + moneyStr
                   }])
                   .then(() => {
                     console.log('message sent');
