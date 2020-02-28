@@ -190,38 +190,40 @@ function updateMemberContainer(memberGroups) {
     titleContainer.appendChild(groupTitle)
 
     //checkbox
-    let checkboxContainer = document.createElement("div");
-    checkboxContainer.setAttribute("class", "ui checkbox");
-    let checkboxLabel = document.createElement("label");
-    checkboxLabel.innerText = "暫停聚會";
-    let checkboxInput = document.createElement("input");
-    checkboxInput.setAttribute("type", "checkbox");
-    if (isSelectedEventSuspend) checkboxInput.setAttribute("checked", true);
-    checkboxInput.setAttribute("id", memberGroup.groupName);
-    checkboxInput.onchange = function (event) {
-      const groupName = event.target.id
-      console.log(groupName + " " + JSON.stringify(event.target.checked));
-      if (event.target.checked) {
-        //suspend
-        if (suspendGroup.indexOf(groupName) === -1) suspendGroup.push(groupName);
-      } else {
-        //normal, remove from suspend list
-        const deleteIdx = suspendGroup.indexOf(groupName);
-        if (deleteIdx > -1) suspendGroup.splice(deleteIdx, 1);
-      }
-      console.log(JSON.stringify(suspendGroup));
+    if (!isSelectedEventGlobal) {
+      let checkboxContainer = document.createElement("div");
+      checkboxContainer.setAttribute("class", "ui checkbox");
+      let checkboxLabel = document.createElement("label");
+      checkboxLabel.innerText = "暫停聚會";
+      let checkboxInput = document.createElement("input");
+      checkboxInput.setAttribute("type", "checkbox");
+      if (isSelectedEventSuspend) checkboxInput.setAttribute("checked", true);
+      checkboxInput.setAttribute("id", memberGroup.groupName);
+      checkboxInput.onchange = function (event) {
+        const groupName = event.target.id
+        console.log(groupName + " " + JSON.stringify(event.target.checked));
+        if (event.target.checked) {
+          //suspend
+          if (suspendGroup.indexOf(groupName) === -1) suspendGroup.push(groupName);
+        } else {
+          //normal, remove from suspend list
+          const deleteIdx = suspendGroup.indexOf(groupName);
+          if (deleteIdx > -1) suspendGroup.splice(deleteIdx, 1);
+        }
+        console.log(JSON.stringify(suspendGroup));
 
-      //redraw all members
-      let children = segment.children;
-      for (var i = 1; i < children.length; i++) {
-        let button = children[i];
-        button.className = event.target.checked ? "ui disabled button" : (reportAtendee.indexOf(button.value) > -1) ? "ui primary button" : "ui primary basic button";
+        //redraw all members
+        let children = segment.children;
+        for (var i = 1; i < children.length; i++) {
+          let button = children[i];
+          button.className = event.target.checked ? "ui disabled button" : (reportAtendee.indexOf(button.value) > -1) ? "ui primary button" : "ui primary basic button";
+        }
       }
+
+      checkboxContainer.appendChild(checkboxInput);
+      checkboxContainer.appendChild(checkboxLabel);
+      titleContainer.appendChild(checkboxContainer);
     }
-
-    checkboxContainer.appendChild(checkboxInput);
-    checkboxContainer.appendChild(checkboxLabel);
-    titleContainer.appendChild(checkboxContainer);
 
     segment.appendChild(titleContainer);
 
