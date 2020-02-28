@@ -281,7 +281,7 @@ function send() {
                 console.log(timeStr + '\n' + attendeeStr);
                 liff.sendMessages([{
                     type: 'text',
-                    text: '完成回報：\n' + timeStr + '\n' + attendeeStr
+                    text: '完成回報：\n' + timeStr + '\n' + allEvents[selectedEventIndex].type + '\n' + attendeeStr
                   }])
                   .then(() => {
                     console.log('message sent');
