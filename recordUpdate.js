@@ -269,33 +269,19 @@ function updateMemberContainer(memberGroups) {
     let groupTitle = document.createElement("h2");
     groupTitle.innerText = "講員";
 
-    let dropdown = document.createElement("div");
-    dropdown.setAttribute("class", "ui fluid selection dropdown");
-    let selectInput = document.createElement("input");
-    selectInput.setAttribute("type", "hidden");
-    let selectIcon = document.createElement("i");
-    selectIcon.setAttribute("class", "dropdown icon");
-    let selectPlaceHolder = document.createElement("div");
-    selectPlaceHolder.setAttribute("class", "default text");
-    selectPlaceHolder.innerText = "選擇講員數量";
-    let selectMenu = document.createElement("div");
-    selectMenu.setAttribute("class", "menu");
+    let select = document.createElement("select");
+    select.setAttribute("id", "speaker-count");
+    select.setAttribute("class", "ui fluid dropdown");
 
     for (let idx = 1; idx <= 10; idx++) {
-      let selectOption = document.createElement("div");
-      selectOption.setAttribute("class", "item");
-      selectOption.setAttribute("data-value", idx);
+      let selectOption = document.createElement("option");
+      selectOption.setAttribute("value", idx);
       selectOption.innerText = idx.toString();
-      selectMenu.appendChild(selectOption);
+      select.appendChild(selectOption);
     }
 
-    dropdown.appendChild(selectInput);
-    dropdown.appendChild(selectIcon);
-    dropdown.appendChild(selectPlaceHolder);
-    dropdown.appendChild(selectMenu);
-
     segment.appendChild(groupTitle);
-    segment.appendChild(dropdown);
+    segment.appendChild(select);
     memberContainer.appendChild(segment);
   }
 }
@@ -321,7 +307,8 @@ function send() {
         reportType: allEvents[selectedEventIndex].type,
         attendee: JSON.stringify(reportAtendee),
         susGroup: JSON.stringify(suspendGroup),
-        moneyCount: document.getElementById("money-value").value
+        moneyCount: document.getElementById("money-value").value,
+        speakerCount: document.getElementById("speaker-count").value
       };
       console.log("postData:" + JSON.stringify(postData));
 
