@@ -273,7 +273,7 @@ function updateMemberContainer(memberGroups) {
     select.setAttribute("id", "speaker-count");
     select.setAttribute("class", "ui fluid dropdown");
 
-    for (let idx = 1; idx <= 10; idx++) {
+    for (let idx = 0; idx <= 10; idx++) {
       let selectOption = document.createElement("option");
       selectOption.setAttribute("value", idx);
       selectOption.innerText = idx.toString();
