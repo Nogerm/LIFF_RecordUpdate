@@ -276,7 +276,21 @@ function send() {
               text: '點擊確定關閉視窗',
               type: 'success',
               onClose: () => {
-                //liff.closeWindow();
+                const timeStr = allEvents[selectedEventIndex].timestring.substr(0, 4) + '/' + allEvents[selectedEventIndex].timestring.substr(4, 2) + '/' + allEvents[selectedEventIndex].timestring.substr(6, 2);
+                const attendeeStr = suspendGroup.length > 0 ? '聚會暫停' : ('聚會人數: ' + reportAtendee.length + '人')
+                console.log(timeStr + '\n' + attendeeStr);
+                liff.sendMessages([{
+                    type: 'text',
+                    text: '完成回報：\n' + timeStr + '\n' + attendeeStr
+                  }])
+                  .then(() => {
+                    console.log('message sent');
+                    liff.closeWindow();
+                  })
+                  .catch((err) => {
+                    console.log('error', err);
+                    liff.closeWindow();
+                  });
               }
             });
           }
