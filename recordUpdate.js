@@ -8,6 +8,7 @@ var suspendGroup = [];
 
 var selectedEventId = undefined;
 var selectedEventIndex = undefined;
+var isSelectedEventSuspend = false;
 
 //init
 window.onload = function (e) {
@@ -110,6 +111,7 @@ function updateTimeContainer(events) {
   selectedEventIndex = 0;
   if (selectedEventId === undefined) selectedEventId = getEventId(events[selectedEventIndex]);
   reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
+  isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
 
   events.forEach((event, index) => {
     //create time button
@@ -123,7 +125,8 @@ function updateTimeContainer(events) {
       selectedEventId = element.target.id;
       selectedEventIndex = element.target.value;
       reportAtendee = JSON.parse(JSON.stringify(allEvents[selectedEventIndex].attendee));
-      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee);
+      isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
+      console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nisSuspend: " + isSelectedEventSuspend);
 
       //redraw all time buttons
       let children = timeContainer.children;
@@ -164,6 +167,7 @@ function updateMemberContainer(memberGroups) {
     checkboxLabel.innerText = "暫停聚會";
     let checkboxInput = document.createElement("input");
     checkboxInput.setAttribute("type", "checkbox");
+    if (isSelectedEventSuspend) checkboxInput.setAttribute("checked", true);
     checkboxInput.setAttribute("id", memberGroup.groupName);
     checkboxInput.onchange = function (event) {
       const groupName = event.target.id
@@ -177,6 +181,13 @@ function updateMemberContainer(memberGroups) {
         if (deleteIdx > -1) suspendGroup.splice(deleteIdx, 1);
       }
       console.log(JSON.stringify(suspendGroup));
+
+      //redraw all members
+      let children = segment.children;
+      for (var i = 1; i < children.length; i++) {
+        let button = children[i];
+        button.className = event.target.checked ? "ui disabled button" : (reportAtendee.indexOf(button.value) > -1) ? "ui primary button" : "ui primary basic button";
+      }
     }
 
     checkboxContainer.appendChild(checkboxInput);
@@ -191,7 +202,7 @@ function updateMemberContainer(memberGroups) {
       //create member button
       let btn = document.createElement("button");
       btn.innerHTML = memberName;
-      btn.setAttribute("class", (reportAtendee.indexOf(memberName) > -1) ? "ui primary button" : "ui primary basic button");
+      btn.setAttribute("class", isSelectedEventSuspend ? "ui disabled button" : (reportAtendee.indexOf(memberName) > -1) ? "ui primary button" : "ui primary basic button");
       btn.setAttribute("id", memberName);
       btn.setAttribute("value", memberName);
       btn.style.marginBottom = "8px";
@@ -242,7 +253,7 @@ function send() {
         attendee: JSON.stringify(reportAtendee),
         susGroup: JSON.stringify(suspendGroup)
       };
-      //console.log("postData:" + JSON.stringify(postData));
+      console.log("postData:" + JSON.stringify(postData));
 
       $.ajax({
         url: hostURL,
