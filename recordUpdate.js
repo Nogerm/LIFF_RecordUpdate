@@ -107,6 +107,15 @@ function getEventId(event) {
   return event.timestring + event.type;
 }
 
+function showMoneyCountIfNeed() {
+  let moneyArea = document.getElementById("money-area");
+  if (isSelectedEventNeedMoneyCount) {
+    moneyArea.style.display = "inherit";
+  } else {
+    moneyArea.style.display = "none";
+  }
+}
+
 function updateTimeContainer(events) {
   const timeContainer = document.getElementById("time-container");
 
@@ -116,6 +125,7 @@ function updateTimeContainer(events) {
   isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
   isSelectedEventGlobal = allEvents[selectedEventIndex].isGlobal;
   isSelectedEventNeedMoneyCount = allEvents[selectedEventIndex].needMoneyCount;
+  showMoneyCountIfNeed()
 
   events.forEach((event, index) => {
     //create time button
@@ -132,6 +142,7 @@ function updateTimeContainer(events) {
       isSelectedEventSuspend = allEvents[selectedEventIndex].isSuspend === "V" ? true : false;
       isSelectedEventGlobal = allEvents[selectedEventIndex].isGlobal;
       isSelectedEventNeedMoneyCount = allEvents[selectedEventIndex].needMoneyCount;
+      showMoneyCountIfNeed()
       console.log("selected id: " + selectedEventId + "\nindex: " + selectedEventIndex + "\nattendee: " + allEvents[selectedEventIndex].attendee + "\nis suspend: " + isSelectedEventSuspend + "\nis global: " + isSelectedEventGlobal + "\nneed money count: " + isSelectedEventNeedMoneyCount);
 
       //redraw all time buttons
