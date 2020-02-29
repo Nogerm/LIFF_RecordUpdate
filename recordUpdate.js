@@ -300,6 +300,8 @@ function send() {
       const btn = document.getElementById("submitBtn");
       btn.className = "fluid ui loading button";
 
+      const speakerElement = document.getElementById("speaker-count");
+
       const postData = {
         lineId: profile.userId,
         type: 'report_attendee',
@@ -308,7 +310,7 @@ function send() {
         attendee: JSON.stringify(reportAtendee),
         susGroup: JSON.stringify(suspendGroup),
         moneyCount: document.getElementById("money-value").value,
-        speakerCount: document.getElementById("speaker-count").value
+        speakerCount: speakerElement === null ? 0 : speakerElement.value
       };
       console.log("postData:" + JSON.stringify(postData));
 
