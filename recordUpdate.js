@@ -1,4 +1,4 @@
-const hostURL = "https://script.google.com/macros/s/AKfycbyQwaNfRrnyBB4kCOvdMgUw_o6v8Z_lNUDqjNCT5Uo-dPKBvZ0/exec";
+const hostURL = "https://script.google.com/macros/s/AKfycbw9F576CeedEWfilIX2wLW8F7WoHKckYOrQagnZamd8uo1lpPFenjzyO8lhH4Yxv-x1/exec";
 const liffID = "1653896800-lZBLPy1z";
 
 var allMembers = [];
